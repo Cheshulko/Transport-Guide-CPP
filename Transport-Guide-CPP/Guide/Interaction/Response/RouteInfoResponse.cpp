@@ -8,7 +8,7 @@
 
 #include "RouteInfoResponse.hpp"
 
-namespace guide::interaction::output {
+namespace guide::interaction::response {
 
 RouteInfoResponse::RouteInfoResponse(const data::RouteInfoResponseData& routeInfoResponseData)
     : routeInfoResponseData_(routeInfoResponseData)
@@ -19,7 +19,7 @@ const data::RouteInfoResponseData& RouteInfoResponse::GetRouteInfoResponseData()
     return routeInfoResponseData_;
 }
 
-void RouteInfoResponse::WriteOuptut(Writer& writer) const
+void RouteInfoResponse::WriteOuptut(output::Writer& writer) const
 {
     writer.WriteRouteInfoResponse(*this);
 }

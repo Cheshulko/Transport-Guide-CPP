@@ -12,14 +12,14 @@
 #include "Request.hpp"
 #include "Route.hpp"
 
-namespace guide::interaction {
+namespace guide::interaction::request {
 
 class AddRouteRequest: public Request
 {
 public:
     AddRouteRequest(std::shared_ptr<route::Route> route);
     
-    virtual std::shared_ptr<output::Response> PerformOn(route::RoutesMap& routesMap) const override;
+    virtual std::shared_ptr<response::Response> PerformOn(route::RoutesMap& routesMap) const override;
     
 private:
     std::shared_ptr<route::Route> route_;

@@ -18,7 +18,7 @@ StreamWriter::StreamWriter(std::ostream& os)
     : os_(os)
 {}
 
-void StreamWriter::WriteRouteInfoResponse(const RouteInfoResponse& routeInfoResponse)
+void StreamWriter::WriteRouteInfoResponse(const response::RouteInfoResponse& routeInfoResponse)
 {
     const auto& routeInfoResponseData = routeInfoResponse.GetRouteInfoResponseData();
     std::cout << "Bus " << routeInfoResponseData.GetRouteNumber()    << ": "

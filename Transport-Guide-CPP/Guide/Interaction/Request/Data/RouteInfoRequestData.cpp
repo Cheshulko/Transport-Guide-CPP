@@ -8,7 +8,7 @@
 
 #include "RouteInfoRequestData.hpp"
 
-namespace guide::interaction::data {
+namespace guide::interaction::request::data {
 
 RouteInfoRequestData::RouteInfoRequestData(const std::string& number)
     : number_(number)

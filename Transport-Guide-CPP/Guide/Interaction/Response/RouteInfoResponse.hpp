@@ -12,7 +12,7 @@
 #include "Writer.hpp"
 #include "RouteInfoResponseData.hpp"
 
-namespace guide::interaction::output {
+namespace guide::interaction::response {
 
 class RouteInfoResponse: public Response
 {
@@ -21,7 +21,7 @@ public:
     
     const data::RouteInfoResponseData& GetRouteInfoResponseData() const;
     
-    virtual void WriteOuptut(Writer& writer) const override;
+    virtual void WriteOuptut(output::Writer& writer) const override;
 
 private:
     data::RouteInfoResponseData routeInfoResponseData_;

@@ -11,12 +11,12 @@
 
 #include "Writer.hpp"
 
-namespace guide::interaction::output {
+namespace guide::interaction::response {
 
 class EmptyResponse: public Response
 {
 public:
-    virtual void WriteOuptut(Writer& writer) const override { /* None */ }
+    virtual void WriteOuptut(output::Writer& writer) const override { /* None */ }
 };
 
 }

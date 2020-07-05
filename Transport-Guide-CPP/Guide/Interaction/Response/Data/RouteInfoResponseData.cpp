@@ -8,7 +8,7 @@
 
 #include "RouteInfoResponseData.hpp"
 
-namespace guide::interaction::data {
+namespace guide::interaction::response::data {
 
 RouteInfoResponseData::RouteInfoResponseData(const std::string& number, std::size_t stopsCnt,
                                              std::size_t uniqueStopsCnt, double routeLength)

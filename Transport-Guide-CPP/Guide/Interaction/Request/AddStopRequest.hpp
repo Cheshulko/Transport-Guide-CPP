@@ -12,14 +12,14 @@
 #include "Request.hpp"
 #include "Stop.hpp"
 
-namespace guide::interaction {
+namespace guide::interaction::request {
 
 class AddStopRequest: public Request
 {
 public:
     AddStopRequest(std::shared_ptr<route::Stop> stop);
     
-    virtual std::shared_ptr<output::Response> PerformOn(route::RoutesMap& routesMap) const override;
+    virtual std::shared_ptr<response::Response> PerformOn(route::RoutesMap& routesMap) const override;
     
 private:
     std::shared_ptr<route::Stop> stop_;

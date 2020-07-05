@@ -13,6 +13,11 @@
 
 #include <vector>
 #include <iostream>
+#include <memory>
+
+namespace guide::route {
+    class Stop;
+}
 
 namespace guide::route {
 

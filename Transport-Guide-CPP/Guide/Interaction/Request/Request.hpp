@@ -12,7 +12,7 @@
 #include "RoutesMap.hpp"
 #include "Response.hpp"
 
-namespace guide::interaction {
+namespace guide::interaction::request {
 
 class Request
 {
@@ -29,7 +29,7 @@ public:
         : type_(type)
     {}
     
-    virtual std::shared_ptr<output::Response> PerformOn(route::RoutesMap& routesMap) const = 0;
+    virtual std::shared_ptr<response::Response> PerformOn(route::RoutesMap& routesMap) const = 0;
     inline virtual Request::Type GetRequestType() const { return type_; }
     
     virtual ~Request() { /* None */ }

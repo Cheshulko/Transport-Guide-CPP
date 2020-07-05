@@ -19,13 +19,13 @@ StreamRouteInfoParser& StreamRouteInfoParser::GetInstance()
     return instance;
 }
 
-std::shared_ptr<interaction::data::RouteInfoRequestData> StreamRouteInfoParser::Parse(std::istream& in)
+std::shared_ptr<request::data::RouteInfoRequestData> StreamRouteInfoParser::Parse(std::istream& in)
 {
     std::string number;
     in >> std::ws;
     std::getline(in, number);
     
-    return std::make_shared<interaction::data::RouteInfoRequestData>(number);
+    return std::make_shared<request::data::RouteInfoRequestData>(number);
 }
 
 }

@@ -18,7 +18,7 @@ namespace guide::interaction::input {
 class InputParser
 {
 public:
-    virtual std::vector<std::shared_ptr<interaction::Request>> Parse() = 0;
+    virtual std::vector<std::shared_ptr<interaction::request::Request>> Parse() = 0;
 
     virtual ~InputParser() { /* None */ }
 };

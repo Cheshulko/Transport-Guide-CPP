@@ -9,14 +9,14 @@
 #include "AddStopRequest.hpp"
 #include "EmptyResponse.hpp"
 
-namespace guide::interaction {
+namespace guide::interaction::request {
 
 AddStopRequest::AddStopRequest(std::shared_ptr<route::Stop> stop)
     : Request(Request::Type::AddStop)
     , stop_(std::move(stop))
 {}
 
-std::shared_ptr<output::Response> AddStopRequest::PerformOn(route::RoutesMap& routesMap) const
+std::shared_ptr<response::Response> AddStopRequest::PerformOn(route::RoutesMap& routesMap) const
 {
     if (auto stopWeakOpt = routesMap.FindStop(stop_); stopWeakOpt.has_value()) {
         if (auto stopFound = stopWeakOpt.value().lock();
@@ -30,7 +30,7 @@ std::shared_ptr<output::Response> AddStopRequest::PerformOn(route::RoutesMap& ro
         routesMap.AddStop(stop_);
     }
     
-    return std::make_shared<output::EmptyResponse>();
+    return std::make_shared<response::EmptyResponse>();
 }
 
 }

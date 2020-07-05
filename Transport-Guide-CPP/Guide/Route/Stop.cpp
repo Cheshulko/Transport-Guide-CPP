@@ -27,6 +27,12 @@ void Stop::SetGeoPoint(const GeoPoint& geoPoint)
     this->completion_ = Stop::Completion::Complete;
 }
 
+bool Stop::AddCrossingRoute(std::weak_ptr<Route> route)
+{
+    crossingRoutes_.push_back(route);
+    return true;
+}
+
 const std::string& Stop::GetName() const
 {
     return name_;
@@ -35,6 +41,11 @@ const std::string& Stop::GetName() const
 std::optional<GeoPoint> Stop::GetGeoPoint() const
 {
     return geoPoint_;
+}
+
+const std::vector<std::weak_ptr<Route>>& Stop::GetCrossingRoutes() const
+{
+    return crossingRoutes_;
 }
 
 bool Stop::IsComplete() const

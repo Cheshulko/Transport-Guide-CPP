@@ -13,7 +13,7 @@
 
 #include <memory>
 
-namespace guide::interaction::output {
+namespace guide::interaction::response {
     class RouteInfoResponse;
 }
 
@@ -22,7 +22,7 @@ namespace guide::interaction::output {
 class Writer
 {
 public:
-    virtual void WriteRouteInfoResponse(const RouteInfoResponse& routeInfoResponse) = 0;
+    virtual void WriteRouteInfoResponse(const response::RouteInfoResponse& routeInfoResponse) = 0;
 };
 
 }

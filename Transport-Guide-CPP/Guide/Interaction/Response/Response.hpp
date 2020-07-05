@@ -13,12 +13,12 @@ namespace guide::interaction::output {
     class Writer;
 }
 
-namespace guide::interaction::output {
+namespace guide::interaction::response {
 
 class Response
 {
 public:
-    virtual void WriteOuptut(Writer& writer) const = 0;
+    virtual void WriteOuptut(output::Writer& writer) const = 0;
 };
 
 }

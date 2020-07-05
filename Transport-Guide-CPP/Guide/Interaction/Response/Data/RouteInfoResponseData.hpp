@@ -12,7 +12,7 @@
 #include <cstddef>
 #include <string>
 
-namespace guide::interaction::data {
+namespace guide::interaction::response::data {
 
 class RouteInfoResponseData
 {

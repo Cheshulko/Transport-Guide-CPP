@@ -26,9 +26,9 @@ StreamInputParser::StreamInputParser(std::istream& in)
     : in_(in)
 {}
 
-std::vector<std::shared_ptr<interaction::Request>> StreamInputParser::Parse()
+std::vector<std::shared_ptr<interaction::request::Request>> StreamInputParser::Parse()
 {
-    std::vector<std::shared_ptr<interaction::Request>> requests;
+    std::vector<std::shared_ptr<interaction::request::Request>> requests;
     
     size_t requestsCnt = 0;
     in_ >> requestsCnt;
@@ -53,10 +53,10 @@ std::vector<std::shared_ptr<interaction::Request>> StreamInputParser::Parse()
         {
             if (type == "Stop") {
                 auto stopParsedPtr = StreamStopParser::GetInstance().Parse(stream);
-                requests.push_back(std::make_shared<interaction::AddStopRequest>(stopParsedPtr));
+                requests.push_back(std::make_shared<interaction::request::AddStopRequest>(stopParsedPtr));
             } else if (type == "Bus") {
                 auto routeParsedPtr = StreamRouteParser::GetInstance().Parse(stream);
-                requests.push_back(std::make_shared<interaction::AddRouteRequest>(routeParsedPtr));
+                requests.push_back(std::make_shared<interaction::request::AddRouteRequest>(routeParsedPtr));
             } else {
                 throw std::runtime_error("No such type");
             }
@@ -86,7 +86,7 @@ std::vector<std::shared_ptr<interaction::Request>> StreamInputParser::Parse()
         {
             if (type == "Bus") {
                 auto routeInfoParsedPtr = StreamRouteInfoParser::GetInstance().Parse(stream);
-                requests.push_back(std::make_shared<interaction::RouteInfoRequest>(routeInfoParsedPtr));
+                requests.push_back(std::make_shared<interaction::request::RouteInfoRequest>(routeInfoParsedPtr));
             } else {
                 throw std::runtime_error("No such type");
             }

@@ -20,7 +20,7 @@ class StreamWriter: public Writer
 public:
     StreamWriter(std::ostream& os = std::cout);
     
-    virtual void WriteRouteInfoResponse(const RouteInfoResponse& routeInfoResponse) override;
+    virtual void WriteRouteInfoResponse(const response::RouteInfoResponse& routeInfoResponse) override;
     
 private:
     std::ostream& os_;

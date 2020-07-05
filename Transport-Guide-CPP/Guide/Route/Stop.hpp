@@ -10,12 +10,18 @@
 #define Stop_hpp
 
 #include "GeoPoint.hpp"
+#include "Route.hpp"
 
 #include <string>
 #include <optional>
 #include <memory>
 #include <cassert>
 #include <iostream>
+#include <vector>
+
+namespace guide::route {
+    class Route;
+}
 
 namespace guide::route {
 
@@ -56,8 +62,11 @@ public:
     
     void SetGeoPoint(const GeoPoint& geoPoint);
     
+    bool AddCrossingRoute(std::weak_ptr<Route> route);
+    
     const std::string& GetName() const;
     std::optional<GeoPoint> GetGeoPoint() const;
+    const std::vector<std::weak_ptr<Route>>& GetCrossingRoutes() const;
     
     bool IsComplete() const;
     
@@ -68,6 +77,8 @@ private:
     std::string name_;
     std::optional<GeoPoint> geoPoint_;
     Completion completion_;
+    
+    std::vector<std::weak_ptr<Route>> crossingRoutes_;
 };
 
 std::ostream& operator<<(std::ostream& os, const Stop& stop);

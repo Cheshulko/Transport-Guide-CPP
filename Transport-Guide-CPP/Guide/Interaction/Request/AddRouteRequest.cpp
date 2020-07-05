@@ -8,20 +8,21 @@
 
 #include "AddRouteRequest.hpp"
 #include "EmptyResponse.hpp"
+#include "GuideException.hpp"
 
 #include "Stop.hpp"
 #include "LinearRoute.hpp"
 #include "CircleRoute.hpp"
 #include <vector>
 
-namespace guide::interaction {
+namespace guide::interaction::request {
 
 AddRouteRequest::AddRouteRequest(std::shared_ptr<route::Route> route)
     : Request(Request::Type::AddStop)
     , route_(std::move(route))
 {}
 
-std::shared_ptr<output::Response> AddRouteRequest::PerformOn(route::RoutesMap& routesMap) const
+std::shared_ptr<response::Response> AddRouteRequest::PerformOn(route::RoutesMap& routesMap) const
 {
     if (auto routeWeakOpt = routesMap.FindRoute(route_->GetNumber()); routeWeakOpt.has_value()) {
         
@@ -38,19 +39,28 @@ std::shared_ptr<output::Response> AddRouteRequest::PerformOn(route::RoutesMap& r
             stops.push_back(stopPtr);
         }
 
+        std::shared_ptr<route::Route> addedRoute;
+        
         switch (route_->GetRouteType()) {
             case route::Route::Type::Linear:
-                routesMap.AddRoute(std::make_shared<route::LinearRoute>(route_->GetNumber(), std::move(stops)));
+                addedRoute = std::make_shared<route::LinearRoute>(route_->GetNumber(), std::move(stops));
                 break;
             case route::Route::Type::Circle:
-                routesMap.AddRoute(std::make_shared<route::CircleRoute>(route_->GetNumber(), std::move(stops)));
+                addedRoute = std::make_shared<route::CircleRoute>(route_->GetNumber(), std::move(stops));
                 break;
             default:
-                break;
+                // TODO: Add UnknownRouteTypeException
+                throw exception::GuideException("Unknown route type");
+        }
+        
+        routesMap.AddRoute(addedRoute);
+        
+        for (auto& stop: addedRoute->GetUniqueStops()) {
+            stop->AddCrossingRoute(addedRoute);
         }
     }
 
-    return std::make_shared<output::EmptyResponse>();
+    return std::make_shared<response::EmptyResponse>();
 }
 
 }

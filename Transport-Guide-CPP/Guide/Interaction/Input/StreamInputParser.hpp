@@ -21,7 +21,7 @@ class StreamInputParser: public InputParser
 public:
     explicit StreamInputParser(std::istream& in = std::cin);
     
-    virtual std::vector<std::shared_ptr<interaction::Request>> Parse() override;
+    virtual std::vector<std::shared_ptr<interaction::request::Request>> Parse() override;
     
 private:
     std::istream& in_;

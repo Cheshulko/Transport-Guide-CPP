@@ -20,7 +20,7 @@ class StreamRouteInfoParser
 {
 public:
     static StreamRouteInfoParser& GetInstance();
-    std::shared_ptr<interaction::data::RouteInfoRequestData> Parse(std::istream& in);
+    std::shared_ptr<request::data::RouteInfoRequestData> Parse(std::istream& in);
 
 private:
     StreamRouteInfoParser();
