@@ -26,9 +26,6 @@ public:
     virtual const std::vector<std::weak_ptr<Stop>>& GetRouteStops() const override;
     virtual std::vector<std::shared_ptr<Stop>> GetUniqueStops() const override;
     
-    virtual double GetDistance() const override;
-    virtual double GetPracticalDistance() const override;
-    
     virtual bool Contains(const Stop& stop) const override;
     
 private:

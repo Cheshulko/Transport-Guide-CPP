@@ -46,40 +46,6 @@ std::vector<std::shared_ptr<Stop>> CircleRoute::GetUniqueStops() const
     return std::vector<std::shared_ptr<Stop>>(uniqueStops_.begin(), uniqueStops_.end());
 }
 
-double CircleRoute::GetDistance() const
-{
-    double routeLength = 0.0;
-    for (auto it = stops_.cbegin(); it != stops_.cend(); ++it) {
-        if (auto nextTo = std::next(it); nextTo != stops_.cend()) {
-            auto geoCurOpt = (*it).lock()->GetGeoPoint();
-            auto geoNextOpt = (*nextTo).lock()->GetGeoPoint();
-            
-            assert(geoCurOpt.has_value());
-            assert(geoNextOpt.has_value());
-            
-            routeLength += geoCurOpt.value().DistanceTo(geoNextOpt.value());
-        }
-    }
-    
-    return routeLength;
-}
-
-double CircleRoute::GetPracticalDistance() const
-{
-    double routePracticalLength = 0.0;
-    for (auto it = stops_.cbegin(); it != stops_.cend(); ++it) {
-        if (auto nextTo = std::next(it); nextTo != stops_.cend()) {
-            auto neighborStopDistanceOpt = (*it).lock()->FindNeighborStopDistance((*nextTo).lock());
-            
-            assert(neighborStopDistanceOpt.has_value());
-            
-            routePracticalLength += neighborStopDistanceOpt.value();
-        }
-    }
-    
-    return routePracticalLength;
-}
-
 bool CircleRoute::Contains(const Stop& stop) const
 {
     throw std::logic_error("Unimplemented");

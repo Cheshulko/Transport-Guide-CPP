@@ -48,8 +48,8 @@ public:
     virtual const std::vector<std::weak_ptr<Stop>>& GetRouteStops() const = 0;
     virtual std::vector<std::shared_ptr<Stop>> GetUniqueStops() const = 0;
     
-    virtual double GetDistance() const = 0;
-    virtual double GetPracticalDistance() const = 0;
+    virtual double GetDistance() const;
+    virtual double GetPracticalDistance() const;
     
     virtual bool Contains(const Stop& stop) const = 0;
     
