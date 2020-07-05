@@ -27,13 +27,13 @@ public:
     
     const std::string& GetStopName() const;
     const route::GeoPoint& GetGeoPoint() const;
-    const std::vector<NeighborDistance>& GetNeighborsDistance() const;
+    const std::vector<NeighborDistance>& GetNeighborStopsDistance() const;
     
 private:
     std::string name_;
     route::GeoPoint geoPoint_;
     
-    std::vector<NeighborDistance> neighborsDistance_;
+    std::vector<NeighborDistance> neighborStopsDistance_;
 };
 
 }

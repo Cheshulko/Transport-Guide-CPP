@@ -26,7 +26,12 @@ void StreamWriter::WriteRouteInfoResponse(const response::RouteInfoResponse& rou
                   << routeInfoResponseData.GetStopsCnt()       << " stops on route, "
                   << routeInfoResponseData.GetUniqueStopsCnt() << " unique stops, "
                   << std::setprecision(6)
-                  << routeInfoResponseData.GetRouteLength()    << " route length" << std::endl;
+                  << routeInfoResponseData.GetRoutePracticalLength() << " route length, ";
+    
+    const double curvature = routeInfoResponseData.GetRoutePracticalLength() / routeInfoResponseData.GetRouteLength();
+    
+              os_ << std::setprecision(7)
+                  << curvature << " curvature" << std::endl;
 }
 
 void StreamWriter::WriteStopCrossingRoutesResponse(const response::StopCrossingRoutesResponse& stopCrossingRoutesResponse)

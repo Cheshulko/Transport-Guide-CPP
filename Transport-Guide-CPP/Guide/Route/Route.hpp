@@ -47,7 +47,10 @@ public:
     virtual const std::string& GetName() const = 0;
     virtual const std::vector<std::weak_ptr<Stop>>& GetRouteStops() const = 0;
     virtual std::vector<std::shared_ptr<Stop>> GetUniqueStops() const = 0;
+    
     virtual double GetDistance() const = 0;
+    virtual double GetPracticalDistance() const = 0;
+    
     virtual bool Contains(const Stop& stop) const = 0;
     
     inline virtual Route::Type GetRouteType() const { return type_; }

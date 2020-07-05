@@ -64,6 +64,22 @@ double CircleRoute::GetDistance() const
     return routeLength;
 }
 
+double CircleRoute::GetPracticalDistance() const
+{
+    double routePracticalLength = 0.0;
+    for (auto it = stops_.cbegin(); it != stops_.cend(); ++it) {
+        if (auto nextTo = std::next(it); nextTo != stops_.cend()) {
+            auto neighborStopDistanceOpt = (*it).lock()->FindNeighborStopDistance((*nextTo).lock());
+            
+            assert(neighborStopDistanceOpt.has_value());
+            
+            routePracticalLength += neighborStopDistanceOpt.value();
+        }
+    }
+    
+    return routePracticalLength;
+}
+
 bool CircleRoute::Contains(const Stop& stop) const
 {
     throw std::logic_error("Unimplemented");

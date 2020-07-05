@@ -33,6 +33,29 @@ bool Stop::AddCrossingRoute(std::weak_ptr<Route> route)
     return true;
 }
 
+bool Stop::AddNeighborStopsDistance(std::weak_ptr<Stop> stop, size_t distance)
+{
+    auto [_, ok] = neighborStopsDistances_.insert({ stop, distance });
+    return ok;
+}
+
+bool Stop::UpdateNeighborStopsDistance(std::weak_ptr<Stop> stop, size_t distance)
+{
+    if (auto stopPtr = neighborStopsDistances_.find(stop); stopPtr != neighborStopsDistances_.end()) {
+        stopPtr->second = distance;
+        return true;
+    }
+    return false;
+}
+
+std::optional<size_t> Stop::FindNeighborStopDistance(std::shared_ptr<Stop> stop) const
+{
+    if (auto stopPtr = neighborStopsDistances_.find(stop); stopPtr != neighborStopsDistances_.end()) {
+        return stopPtr->second;
+    }
+    return std::nullopt;
+}
+
 const std::string& Stop::GetName() const
 {
     return name_;
@@ -46,6 +69,11 @@ std::optional<GeoPoint> Stop::GetGeoPoint() const
 const std::vector<std::weak_ptr<Route>>& Stop::GetCrossingRoutes() const
 {
     return crossingRoutes_;
+}
+
+const std::map<std::weak_ptr<Stop>, size_t, Stop::WeakComparator>& Stop::GetNeighborStopsDistances() const
+{
+    return neighborStopsDistances_;
 }
 
 bool Stop::IsComplete() const

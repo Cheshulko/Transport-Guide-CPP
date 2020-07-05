@@ -10,10 +10,10 @@
 
 namespace guide::interaction::request::data {
 
-AddStopRequestData::AddStopRequestData(const std::string& name, const route::GeoPoint& geoPoint, const std::vector<NeighborDistance>& neighborsDistance)
+AddStopRequestData::AddStopRequestData(const std::string& name, const route::GeoPoint& geoPoint, const std::vector<NeighborDistance>& neighborStopsDistance)
     : name_(name)
     , geoPoint_(geoPoint)
-    , neighborsDistance_(neighborsDistance)
+    , neighborStopsDistance_(neighborStopsDistance)
 {}
 
 const std::string& AddStopRequestData::GetStopName() const
@@ -26,9 +26,9 @@ const route::GeoPoint& AddStopRequestData::GetGeoPoint() const
     return geoPoint_;
 }
 
-const std::vector<AddStopRequestData::NeighborDistance>& AddStopRequestData::GetNeighborsDistance() const
+const std::vector<AddStopRequestData::NeighborDistance>& AddStopRequestData::GetNeighborStopsDistance() const
 {
-    return neighborsDistance_;
+    return neighborStopsDistance_;
 }
 
 }

@@ -18,18 +18,23 @@ class RouteInfoResponseData
 {
 public:
     RouteInfoResponseData(const std::string& number, std::size_t stopsCnt,
-                          std::size_t uniqueStopsCnt, double routeLength);
+                          std::size_t uniqueStopsCnt,
+                          double routeLength, double routePracticalLength);
     
     const std::string& GetRouteNumber() const;
     std::size_t GetStopsCnt() const;
     std::size_t GetUniqueStopsCnt() const;
+    
     double GetRouteLength() const;
+    double GetRoutePracticalLength() const;
     
 private:
     std::string number_;
     std::size_t stopsCnt_;
     std::size_t uniqueStopsCnt_;
+    
     double routeLength_;
+    double routePracticalLength_;
 };
 
 }
