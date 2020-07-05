@@ -8,7 +8,10 @@
 
 #include "Json.hpp"
 
-namespace guide::json {
+#include <iostream>
+#include <string>
+
+namespace guide::serialization::json {
 
 Document::Document(Node root)
     : root(move(root))
@@ -44,11 +47,41 @@ Node LoadInt(std::istream& input)
     return Node(result);
 }
 
+Node LoadDouble(std::istream& input)
+{
+    double result = 0;
+    double p = 0.1;
+    while (isdigit(input.peek())) {
+        result *= 10;
+        result += input.get() - '0';
+    }
+    if (input.peek() == '.') {
+        input.get();
+        while (isdigit(input.peek())) {
+            result += p * (input.get() - '0');
+            p *= 0.1;
+        }
+    }
+    
+    return Node(result);
+}
+
 Node LoadString(std::istream& input)
 {
     std::string line;
     getline(input, line, '"');
     return Node(move(line));
+}
+
+Node LoadBool(std::istream& input)
+{
+    std::string line;
+    getline(input, line);
+    if (line == "true") {
+        return Node(true);
+    } else {
+        return Node(false);
+    }
 }
 
 Node LoadDict(std::istream& input)
@@ -79,9 +112,13 @@ Node LoadNode(std::istream& input)
         return LoadDict(input);
     } else if (c == '"') {
         return LoadString(input);
+    } else if (c == 'f' || c == 't') {
+        char g;
+        
+        return LoadBool(input);
     } else {
         input.putback(c);
-        return LoadInt(input);
+        return LoadDouble(input);
     }
 }
 

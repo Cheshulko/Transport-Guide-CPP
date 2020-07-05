@@ -31,9 +31,9 @@ std::shared_ptr<route::Route> RouteParser::Parse(std::istream& in)
     std::vector<std::shared_ptr<route::Stop>> stops;
     route::Route::Type routeType = route::Route::Type::Unknown;
     
-    std::string number;
+    std::string name;
     in >> std::ws;
-    std::getline(in, number, ':');
+    std::getline(in, name, ':');
     
     std::string str;
     in >> std::ws;
@@ -62,7 +62,7 @@ std::shared_ptr<route::Route> RouteParser::Parse(std::istream& in)
     switch (routeType) {
         case route::Route::Type::Circle: {
             stops.back() = stops.front();
-            route = std::make_shared<route::CircleRoute>(number, stops);
+            route = std::make_shared<route::CircleRoute>(name, stops);
             break;
         }
         case route::Route::Type::Linear: {
@@ -75,7 +75,7 @@ std::shared_ptr<route::Route> RouteParser::Parse(std::istream& in)
             std::copy(stops.begin(), stops.end(), std::back_inserter(linearStops));
             std::reverse_copy(stops.begin(), std::prev(stops.end()), std::back_inserter(linearStops));
 
-            route = std::make_shared<route::LinearRoute>(number, linearStops);
+            route = std::make_shared<route::LinearRoute>(name, linearStops);
             break;
         }
         default: /* route::Route::Type::Unknown */ {
@@ -83,7 +83,7 @@ std::shared_ptr<route::Route> RouteParser::Parse(std::istream& in)
             // TODO: Route with 1 stop? WTF
             auto&& stop = std::make_shared<route::Stop>(str);
             stops.push_back(stop);
-            route = std::make_shared<route::LinearRoute>(number, stops);
+            route = std::make_shared<route::LinearRoute>(name, stops);
             break;
         }
     }

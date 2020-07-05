@@ -11,18 +11,21 @@
 
 #include <cstddef>
 #include <string>
+#include <optional>
 
 namespace guide::interaction::request::data {
 
 class StopCrossingRoutesRequestData
 {
 public:
-    explicit StopCrossingRoutesRequestData(const std::string& stopName);
+    explicit StopCrossingRoutesRequestData(const std::string& stopName, std::optional<size_t> id = std::nullopt);
     
     const std::string& GetStopName() const;
+    std::optional<size_t> GetStopId() const;
     
 private:
     std::string stopName_;
+    std::optional<size_t> id_;
 };
 
 }

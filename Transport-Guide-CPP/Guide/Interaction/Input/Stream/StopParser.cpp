@@ -63,14 +63,9 @@ std::shared_ptr<request::data::AddStopRequestData> StopParser::Parse(std::istrea
         neighborsDistance.push_back(request::data::AddStopRequestData::NeighborDistance { distance, toStopName });
     }
     
-    // TODO: 
     auto addStopRequestDataPtr = std::make_shared<request::data::AddStopRequestData>(
         name, route::GeoPoint{ lat, lon }, neighborsDistance
     );
-    
-//#ifdef LOG_DEBUG
-//    std::cerr << "LOG: Parsed " << *stopPtr << std::endl;
-//#endif
     
     return addStopRequestDataPtr;
 }

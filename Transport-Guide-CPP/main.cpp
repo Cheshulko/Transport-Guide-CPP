@@ -7,12 +7,15 @@
 //
 
 #include <iostream>
+#include <fstream>
 
 #define LOG_DEBUG
 
 #include "RoutesMap.hpp"
-#include "StreamInputParser.hpp"
+#include "JInputParser.hpp"
 #include "StreamWriter.hpp"
+
+#include "Json.hpp"
 
 #include "GuideException.hpp"
 
@@ -21,7 +24,13 @@ int main() {
     guide::route::RoutesMap routesMap;
     guide::interaction::output::StreamWriter streamWriter;
     
-    std::unique_ptr<guide::interaction::input::InputParser> parser = std::make_unique<guide::interaction::input::StreamInputParser>();
+    std::ifstream file ("in.txt");
+    
+    if (!file.is_open()) {
+        throw std::runtime_error("No in.txt");
+    }
+    
+    std::unique_ptr<guide::interaction::input::Parser> parser = std::make_unique<guide::interaction::input::json::JInputParser>(file);
     
     const auto requests = parser->Parse();
     for (const auto& request: requests) {

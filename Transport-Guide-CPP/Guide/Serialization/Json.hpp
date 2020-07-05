@@ -15,10 +15,11 @@
 #include <variant>
 #include <vector>
 
-namespace guide::json {
+namespace guide::serialization::json {
 
 class Node: std::variant<std::vector<Node>,
-            std::map<std::string, Node>, int, std::string>
+            std::map<std::string, Node>,
+            int, double, bool, std::string>
 {
 public:
     using variant::variant;
@@ -33,6 +34,14 @@ public:
     
     int AsInt() const {
         return std::get<int>(*this);
+    }
+    
+    double AsDouble() const {
+        return std::get<double>(*this);
+    }
+    
+    int AsBool() const {
+        return std::get<bool>(*this);
     }
     
     const auto& AsString() const {
