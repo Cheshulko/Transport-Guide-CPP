@@ -35,7 +35,6 @@ std::shared_ptr<route::Route> StreamRouteParser::Parse(std::istream& in)
     in >> std::ws;
     std::getline(in, number, ':');
     
-    
     std::string str;
     in >> std::ws;
     std::getline(in, str);
@@ -58,16 +57,13 @@ std::shared_ptr<route::Route> StreamRouteParser::Parse(std::istream& in)
         }
     }
     
+    std::shared_ptr<route::Route> route;
+    
     switch (routeType) {
         case route::Route::Type::Circle: {
             stops.back() = stops.front();
-            std::shared_ptr<route::Route> route = std::make_shared<route::CircleRoute>(number, stops);
-            
-#ifdef LOG_DEBUG
-            std::cerr << "LOG: Parsed " << *route << std::endl;
-#endif
-            
-            return route;
+            route = std::make_shared<route::CircleRoute>(number, stops);
+            break;
         }
         case route::Route::Type::Linear: {
             
@@ -79,25 +75,24 @@ std::shared_ptr<route::Route> StreamRouteParser::Parse(std::istream& in)
             std::copy(stops.begin(), stops.end(), std::back_inserter(linearStops));
             std::reverse_copy(stops.begin(), std::prev(stops.end()), std::back_inserter(linearStops));
 
-            std::shared_ptr<route::Route> route = std::make_shared<route::LinearRoute>(number, linearStops);
-            
-#ifdef LOG_DEBUG
-            std::cerr << "LOG: Parsed " << *route << std::endl;
-#endif
-            
-            return route;
+            route = std::make_shared<route::LinearRoute>(number, linearStops);
+            break;
         }
         default: /* route::Route::Type::Unknown */ {
-            
-//            throw std::runtime_error("No such route type");
             
             // TODO: Route with 1 stop? WTF
             auto&& stop = std::make_shared<route::Stop>(str);
             stops.push_back(stop);
-            std::shared_ptr<route::Route> route = std::make_shared<route::LinearRoute>(number, stops);
-            return route;
+            route = std::make_shared<route::LinearRoute>(number, stops);
+            break;
         }
     }
+    
+#ifdef LOG_DEBUG
+    std::cerr << "LOG: Parsed " << *route << std::endl;
+#endif
+                
+    return route;
 }
 
 }

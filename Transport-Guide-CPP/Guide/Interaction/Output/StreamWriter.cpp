@@ -8,6 +8,7 @@
 
 #include "StreamWriter.hpp"
 #include "RouteInfoResponse.hpp"
+#include "StopCrossingRoutesResponse.hpp"
 
 #include <iostream>
 #include <iomanip>
@@ -21,11 +22,29 @@ StreamWriter::StreamWriter(std::ostream& os)
 void StreamWriter::WriteRouteInfoResponse(const response::RouteInfoResponse& routeInfoResponse)
 {
     const auto& routeInfoResponseData = routeInfoResponse.GetRouteInfoResponseData();
-    std::cout << "Bus " << routeInfoResponseData.GetRouteNumber()    << ": "
-                        << routeInfoResponseData.GetStopsCnt()       << " stops on route, "
-                        << routeInfoResponseData.GetUniqueStopsCnt() << " unique stops, "
-                        << std::setprecision(6)
-                        << routeInfoResponseData.GetRouteLength()    << " route length" << std::endl;
+    os_ << "Bus " << routeInfoResponseData.GetRouteNumber()    << ": "
+                  << routeInfoResponseData.GetStopsCnt()       << " stops on route, "
+                  << routeInfoResponseData.GetUniqueStopsCnt() << " unique stops, "
+                  << std::setprecision(6)
+                  << routeInfoResponseData.GetRouteLength()    << " route length" << std::endl;
+}
+
+void StreamWriter::WriteStopCrossingRoutesResponse(const response::StopCrossingRoutesResponse& stopCrossingRoutesResponse)
+{
+    const auto& crossingRoutesResponseData = stopCrossingRoutesResponse.GetStopCrossingRoutesResponseData();
+    os_ << "Stop " << crossingRoutesResponseData.GetStopName() << ":";
+    
+    const auto& crossingRoutesNames = crossingRoutesResponseData.GetCrossingRoutesNames();
+    if (crossingRoutesNames.size() == 0) {
+        os_  << " no buses" << std::endl;
+        
+    } else {
+        os_  << " buses";
+        for (const auto& crossingRouteName: crossingRoutesNames) {
+            os_ << " " << crossingRouteName;
+        }
+        os_ << std::endl;
+    }
 }
 
 }

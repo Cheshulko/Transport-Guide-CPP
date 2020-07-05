@@ -44,7 +44,7 @@ public:
 public:
     Route(Route::Type type);
     
-    virtual const std::string& GetNumber() const = 0;
+    virtual const std::string& GetName() const = 0;
     virtual const std::vector<std::weak_ptr<Stop>>& GetRouteStops() const = 0;
     virtual std::vector<std::shared_ptr<Stop>> GetUniqueStops() const = 0;
     virtual double GetDistance() const = 0;

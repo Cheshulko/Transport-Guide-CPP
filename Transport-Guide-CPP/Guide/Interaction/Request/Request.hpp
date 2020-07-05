@@ -21,7 +21,8 @@ public:
     {
         AddStop,
         AddRoute,
-        RouteInfo
+        RouteInfo,
+        StopCrossing
     };
     
 public:

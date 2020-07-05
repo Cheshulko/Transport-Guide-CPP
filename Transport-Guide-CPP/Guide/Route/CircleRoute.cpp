@@ -13,9 +13,9 @@
 
 namespace guide::route {
 
-CircleRoute::CircleRoute(const std::string& number, const std::vector<std::shared_ptr<Stop>>& stops)
+CircleRoute::CircleRoute(const std::string& name, const std::vector<std::shared_ptr<Stop>>& stops)
     : Route(Route::Type::Circle)
-    , number_(number)
+    , name_(name)
 {
     uniqueStops_.insert(stops.cbegin(), stops.cend());
     std::transform(stops.cbegin(), stops.cend(), std::back_inserter(stops_), [this](auto& stop) {
@@ -23,17 +23,17 @@ CircleRoute::CircleRoute(const std::string& number, const std::vector<std::share
     });
 }
 
-CircleRoute::CircleRoute(const std::string& number)
+CircleRoute::CircleRoute(const std::string& name)
     : Route(Route::Type::Circle)
-    , number_(number)
+    , name_(name)
 {}
 
 CircleRoute::~CircleRoute()
 {}
 
-const std::string& CircleRoute::GetNumber() const
+const std::string& CircleRoute::GetName() const
 {
-    return number_;
+    return name_;
 }
 
 const std::vector<std::weak_ptr<Stop>>& CircleRoute::GetRouteStops() const

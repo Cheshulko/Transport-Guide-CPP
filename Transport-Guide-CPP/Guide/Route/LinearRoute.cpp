@@ -14,9 +14,9 @@
 
 namespace guide::route {
 
-LinearRoute::LinearRoute(const std::string& number, const std::vector<std::shared_ptr<Stop>>& stops)
+LinearRoute::LinearRoute(const std::string& name, const std::vector<std::shared_ptr<Stop>>& stops)
     : Route(Route::Type::Linear)
-    , number_(number)
+    , name_(name)
 {
     uniqueStops_.insert(stops.cbegin(), stops.cend());
     std::transform(stops.cbegin(), stops.cend(), std::back_inserter(stops_), [this](auto& stop) {
@@ -26,15 +26,15 @@ LinearRoute::LinearRoute(const std::string& number, const std::vector<std::share
 
 LinearRoute::LinearRoute(const std::string& number)
     : Route(Route::Type::Linear)
-    , number_(number)
+    , name_(number)
 {}
 
 LinearRoute::~LinearRoute()
 {}
 
-const std::string& LinearRoute::GetNumber() const
+const std::string& LinearRoute::GetName() const
 {
-    return number_;
+    return name_;
 }
 
 const std::vector<std::weak_ptr<Stop>>& LinearRoute::GetRouteStops() const

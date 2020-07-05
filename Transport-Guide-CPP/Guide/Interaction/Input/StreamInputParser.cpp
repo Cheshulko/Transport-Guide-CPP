@@ -13,10 +13,13 @@
 #include "StreamStopParser.hpp"
 #include "StreamRouteParser.hpp"
 #include "StreamRouteInfoParser.hpp"
+#include "StreamStopCrossingRoutesParser.hpp"
 
 #include "AddStopRequest.hpp"
 #include "AddRouteRequest.hpp"
+
 #include "RouteInfoRequest.hpp"
+#include "StopCrossingRoutesRequest.hpp"
 
 #include <sstream>
 
@@ -87,6 +90,9 @@ std::vector<std::shared_ptr<interaction::request::Request>> StreamInputParser::P
             if (type == "Bus") {
                 auto routeInfoParsedPtr = StreamRouteInfoParser::GetInstance().Parse(stream);
                 requests.push_back(std::make_shared<interaction::request::RouteInfoRequest>(routeInfoParsedPtr));
+            } else if (type == "Stop") {
+                auto stopCrossingRoutesParsedPtr = StreamStopCrossingRoutesParser::GetInstance().Parse(stream);
+                requests.push_back(std::make_shared<interaction::request::StopCrossingRoutesRequest>(stopCrossingRoutesParsedPtr));
             } else {
                 throw std::runtime_error("No such type");
             }

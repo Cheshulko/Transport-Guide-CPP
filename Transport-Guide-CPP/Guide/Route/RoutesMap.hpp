@@ -28,7 +28,7 @@ public:
     
     std::optional<std::weak_ptr<Stop>> FindStop(const std::string& name) const;
     std::optional<std::weak_ptr<Stop>> FindStop(std::shared_ptr<Stop> stop) const;
-    std::optional<std::weak_ptr<Route>> FindRoute(const std::string& number) const;
+    std::optional<std::weak_ptr<Route>> FindRoute(const std::string& name) const;
     
 private:
     std::set<std::shared_ptr<Route>, Route::SharedComparator> routes_;

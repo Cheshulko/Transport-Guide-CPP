@@ -27,12 +27,12 @@ std::shared_ptr<response::Response> RouteInfoRequest::PerformOn(route::RoutesMap
     if (auto routeWeakOpt = routesMap.FindRoute(routeInfo_->GetRouteNumber()); routeWeakOpt.has_value()) {
         auto routePtr = routeWeakOpt.value().lock();
         assert(routePtr != nullptr);
-        const auto number = routePtr->GetNumber();
+        const auto name = routePtr->GetName();
         const auto stopsCnt = routePtr->GetRouteStops().size();
         const auto uniqueStopsCnt = routePtr->GetUniqueStops().size();
         const auto routeLength = routePtr->GetDistance();
         return std::make_shared<response::RouteInfoResponse>( response::data::RouteInfoResponseData {
-            number, stopsCnt, uniqueStopsCnt, routeLength
+            name, stopsCnt, uniqueStopsCnt, routeLength
         });
     } else {
         throw exception::NoRouteException("Bus " + routeInfo_->GetRouteNumber() + ": not found");

@@ -16,14 +16,14 @@ Route::Route(Route::Type type)
 
 bool Route::operator==(const Route& rhs) const
 {
-    return this->GetNumber() == rhs.GetNumber();
+    return this->GetName() == rhs.GetName();
 }
 
 bool Route::operator<(const Route& rhs) const
 {
     return std::lexicographical_compare(
-        this->GetNumber().cbegin(), this->GetNumber().cend(),
-        rhs.GetNumber().cbegin(), rhs.GetNumber().cend());
+        this->GetName().cbegin(), this->GetName().cend(),
+        rhs.GetName().cbegin(), rhs.GetName().cend());
 }
 
 std::ostream& operator<<(std::ostream& os, const Route::Type& routeType)
@@ -40,7 +40,7 @@ std::ostream& operator<<(std::ostream& os, const Route::Type& routeType)
 std::ostream& operator<<(std::ostream& os, const Route& route)
 {
     os << std::string{ "`Route`(" }
-       << route.GetNumber()
+       << route.GetName()
        << std::string{ " " } << route.GetRouteType()
        << std::string { " : \n" };
     

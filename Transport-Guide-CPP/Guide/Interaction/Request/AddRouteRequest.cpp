@@ -24,7 +24,7 @@ AddRouteRequest::AddRouteRequest(std::shared_ptr<route::Route> route)
 
 std::shared_ptr<response::Response> AddRouteRequest::PerformOn(route::RoutesMap& routesMap) const
 {
-    if (auto routeWeakOpt = routesMap.FindRoute(route_->GetNumber()); routeWeakOpt.has_value()) {
+    if (auto routeWeakOpt = routesMap.FindRoute(route_->GetName()); routeWeakOpt.has_value()) {
         
     } else {
         std::vector<std::shared_ptr<route::Stop>> stops;
@@ -43,10 +43,10 @@ std::shared_ptr<response::Response> AddRouteRequest::PerformOn(route::RoutesMap&
         
         switch (route_->GetRouteType()) {
             case route::Route::Type::Linear:
-                addedRoute = std::make_shared<route::LinearRoute>(route_->GetNumber(), std::move(stops));
+                addedRoute = std::make_shared<route::LinearRoute>(route_->GetName(), std::move(stops));
                 break;
             case route::Route::Type::Circle:
-                addedRoute = std::make_shared<route::CircleRoute>(route_->GetNumber(), std::move(stops));
+                addedRoute = std::make_shared<route::CircleRoute>(route_->GetName(), std::move(stops));
                 break;
             default:
                 // TODO: Add UnknownRouteTypeException

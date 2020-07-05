@@ -21,6 +21,7 @@ public:
     StreamWriter(std::ostream& os = std::cout);
     
     virtual void WriteRouteInfoResponse(const response::RouteInfoResponse& routeInfoResponse) override;
+    virtual void WriteStopCrossingRoutesResponse(const response::StopCrossingRoutesResponse& stopCrossingRoutesResponse) override;
     
 private:
     std::ostream& os_;

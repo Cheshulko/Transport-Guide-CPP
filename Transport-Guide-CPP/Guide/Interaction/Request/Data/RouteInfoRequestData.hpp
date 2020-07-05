@@ -17,7 +17,7 @@ namespace guide::interaction::request::data {
 class RouteInfoRequestData
 {
 public:
-    RouteInfoRequestData(const std::string& number);
+    explicit RouteInfoRequestData(const std::string& number);
     
     const std::string& GetRouteNumber() const;
     

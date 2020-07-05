@@ -15,6 +15,7 @@
 
 namespace guide::interaction::response {
     class RouteInfoResponse;
+    class StopCrossingRoutesResponse;
 }
 
 namespace guide::interaction::output {
@@ -23,6 +24,7 @@ class Writer
 {
 public:
     virtual void WriteRouteInfoResponse(const response::RouteInfoResponse& routeInfoResponse) = 0;
+    virtual void WriteStopCrossingRoutesResponse(const response::StopCrossingRoutesResponse& stopCrossingRoutesResponse) = 0;
 };
 
 }

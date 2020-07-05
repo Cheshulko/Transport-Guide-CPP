@@ -47,11 +47,11 @@ std::optional<std::weak_ptr<Stop>> RoutesMap::FindStop(std::shared_ptr<Stop> sto
     return std::nullopt;
 }
 
-std::optional<std::weak_ptr<Route>> RoutesMap::FindRoute(const std::string& number) const
+std::optional<std::weak_ptr<Route>> RoutesMap::FindRoute(const std::string& name) const
 {
     // TODO: Optimize using set-vector
-    auto ptr = std::find_if(routes_.cbegin(), routes_.cend(), [&number](const auto& route) {
-        return route->GetNumber() == number;
+    auto ptr = std::find_if(routes_.cbegin(), routes_.cend(), [&name](const auto& route) {
+        return route->GetName() == name;
     });
     if (ptr != routes_.end())
     {
