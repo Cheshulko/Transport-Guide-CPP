@@ -24,7 +24,7 @@ std::shared_ptr<request::data::StopCrossingRoutesRequestData> JStopCrossingRoute
     const auto& nodeMap = node.AsMap();
     
     const auto& name = nodeMap.at("name").AsString();
-    const auto& id = static_cast<size_t>(nodeMap.at("id").AsDouble());
+    const auto& id = nodeMap.at("id").AsInt();
     
     return std::make_shared<request::data::StopCrossingRoutesRequestData>(name);
 }

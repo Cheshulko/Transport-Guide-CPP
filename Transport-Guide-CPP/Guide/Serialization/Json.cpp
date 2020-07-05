@@ -47,7 +47,7 @@ Node LoadInt(std::istream& input)
     return Node(result);
 }
 
-Node LoadDouble(std::istream& input)
+Node LoadNumber(std::istream& input)
 {
     double result = 0;
     double p = 0.1;
@@ -61,9 +61,10 @@ Node LoadDouble(std::istream& input)
             result += p * (input.get() - '0');
             p *= 0.1;
         }
+        return Node(result);
+    } else {
+        return Node(static_cast<int>(result));
     }
-    
-    return Node(result);
 }
 
 Node LoadString(std::istream& input)
@@ -113,12 +114,10 @@ Node LoadNode(std::istream& input)
     } else if (c == '"') {
         return LoadString(input);
     } else if (c == 'f' || c == 't') {
-        char g;
-        
         return LoadBool(input);
     } else {
         input.putback(c);
-        return LoadDouble(input);
+        return LoadNumber(input);
     }
 }
 

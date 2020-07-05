@@ -32,7 +32,7 @@ std::shared_ptr<request::data::AddStopRequestData> JStopParser::Parse(const seri
     
     for (const auto& roadDistance: roadDistances) {
         neighborsDistance.emplace_back(
-            static_cast<size_t>(roadDistance.second.AsDouble()),
+            roadDistance.second.AsInt(),
             roadDistance.first
         );
     }
