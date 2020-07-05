@@ -27,7 +27,7 @@ private:
 
 public:
     StopCrossingRoutesParser(StopCrossingRoutesParser const&) = delete;
-    void operator=(StopCrossingRoutesParser const&)                = delete;
+    void operator=(StopCrossingRoutesParser const&)           = delete;
 };
 
 }

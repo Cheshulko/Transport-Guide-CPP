@@ -17,7 +17,7 @@ namespace guide::interaction::response {
 class RouteInfoResponse: public Response
 {
 public:
-    RouteInfoResponse(const data::RouteInfoResponseData& routeInfoResponseData);
+    explicit RouteInfoResponse(const data::RouteInfoResponseData& routeInfoResponseData);
     
     const data::RouteInfoResponseData& GetRouteInfoResponseData() const;
     

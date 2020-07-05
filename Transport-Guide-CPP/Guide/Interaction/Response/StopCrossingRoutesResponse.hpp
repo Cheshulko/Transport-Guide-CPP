@@ -17,7 +17,7 @@ namespace guide::interaction::response {
 class StopCrossingRoutesResponse: public Response
 {
 public:
-    StopCrossingRoutesResponse(const data::StopCrossingRoutesResponseData& crossingRoutesResponseData);
+    explicit StopCrossingRoutesResponse(const data::StopCrossingRoutesResponseData& crossingRoutesResponseData);
     
     const data::StopCrossingRoutesResponseData& GetStopCrossingRoutesResponseData() const;
     

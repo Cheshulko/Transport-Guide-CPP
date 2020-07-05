@@ -27,7 +27,7 @@ private:
 
 public:
     RouteInfoParser(RouteInfoParser const&) = delete;
-    void operator=(RouteInfoParser const&)        = delete;
+    void operator=(RouteInfoParser const&)  = delete;
 };
 
 }

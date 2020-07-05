@@ -26,8 +26,8 @@ private:
     StopParser();
 
 public:
-    StopParser(StopParser const&) = delete;
-    void operator=(StopParser const&)   = delete;
+    StopParser(StopParser const&)     = delete;
+    void operator=(StopParser const&) = delete;
 };
 
 }
