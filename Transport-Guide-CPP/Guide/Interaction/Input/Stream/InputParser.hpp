@@ -9,17 +9,17 @@
 #ifndef StreamInputParser_hpp
 #define StreamInputParser_hpp
 
-#include "InputParser.hpp"
+#include "Parser.hpp"
 #include "Request.hpp"
 
 #include <iostream>
 
-namespace guide::interaction::input {
+namespace guide::interaction::input::stream {
 
-class StreamInputParser: public InputParser
+class InputParser: public Parser
 {
 public:
-    explicit StreamInputParser(std::istream& in = std::cin);
+    explicit InputParser(std::istream& in = std::cin);
     
     virtual std::vector<std::shared_ptr<interaction::request::Request>> Parse() override;
     

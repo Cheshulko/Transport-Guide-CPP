@@ -14,20 +14,20 @@
 #include <iostream>
 #include <memory>
 
-namespace guide::interaction::input {
+namespace guide::interaction::input::stream {
 
-class StreamStopParser
+class StopParser
 {
 public:
-    static StreamStopParser& GetInstance();
+    static StopParser& GetInstance();
     std::shared_ptr<request::data::AddStopRequestData> Parse(std::istream& in);
 
 private:
-    StreamStopParser();
+    StopParser();
 
 public:
-    StreamStopParser(StreamStopParser const&) = delete;
-    void operator=(StreamStopParser const&)   = delete;
+    StopParser(StopParser const&) = delete;
+    void operator=(StopParser const&)   = delete;
 };
 
 }

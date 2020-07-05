@@ -1,13 +1,13 @@
 //
-//  InputParser.hpp
+//  Parser.hpp
 //  transportnyi-spravochnik
 //
 //  Created by Mykyta Cheshulko on 02.07.2020.
 //  Copyright © 2020 Mykyta Cheshulko. All rights reserved.
 //
 
-#ifndef InputParser_hpp
-#define InputParser_hpp
+#ifndef Parser_hpp
+#define Parser_hpp
 
 #include "Route.hpp"
 #include "Stop.hpp"
@@ -15,14 +15,14 @@
 
 namespace guide::interaction::input {
 
-class InputParser
+class Parser
 {
 public:
     virtual std::vector<std::shared_ptr<interaction::request::Request>> Parse() = 0;
 
-    virtual ~InputParser() { /* None */ }
+    virtual ~Parser() { /* None */ }
 };
 
 }
 
-#endif /* InputParser_hpp */
+#endif /* Parser_hpp */

@@ -1,12 +1,12 @@
 //
-//  StreamRouteParser.cpp
+//  RouteParser.cpp
 //  transportnyi-spravochnik
 //
 //  Created by Mykyta Cheshulko on 02.07.2020.
 //  Copyright © 2020 Mykyta Cheshulko. All rights reserved.
 //
 
-#include "StreamRouteParser.hpp"
+#include "RouteParser.hpp"
 
 #include "Stop.hpp"
 #include "CircleRoute.hpp"
@@ -15,18 +15,18 @@
 #include <iostream>
 #include <algorithm>
 
-namespace guide::interaction::input {
+namespace guide::interaction::input::stream {
 
-StreamRouteParser::StreamRouteParser()
+RouteParser::RouteParser()
 {}
 
-StreamRouteParser& StreamRouteParser::GetInstance()
+RouteParser& RouteParser::GetInstance()
 {
-    static StreamRouteParser instance;
+    static RouteParser instance;
     return instance;
 }
 
-std::shared_ptr<route::Route> StreamRouteParser::Parse(std::istream& in)
+std::shared_ptr<route::Route> RouteParser::Parse(std::istream& in)
 {
     std::vector<std::shared_ptr<route::Stop>> stops;
     route::Route::Type routeType = route::Route::Type::Unknown;

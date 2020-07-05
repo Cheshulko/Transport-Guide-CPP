@@ -1,27 +1,27 @@
 //
-//  StreamStopParser.cpp
+//  StopParser.cpp
 //  transportnyi-spravochnik
 //
 //  Created by Mykyta Cheshulko on 02.07.2020.
 //  Copyright © 2020 Mykyta Cheshulko. All rights reserved.
 //
 
-#include "StreamStopParser.hpp"
+#include "StopParser.hpp"
 
 #include <string>
 
-namespace guide::interaction::input {
+namespace guide::interaction::input::stream {
 
-StreamStopParser::StreamStopParser()
+StopParser::StopParser()
 {}
 
-StreamStopParser& StreamStopParser::GetInstance()
+StopParser& StopParser::GetInstance()
 {
-    static StreamStopParser instance; 
+    static StopParser instance;
     return instance;
 }
 
-std::shared_ptr<request::data::AddStopRequestData> StreamStopParser::Parse(std::istream& in)
+std::shared_ptr<request::data::AddStopRequestData> StopParser::Parse(std::istream& in)
 {
     std::string name;
     std::vector<request::data::AddStopRequestData::NeighborDistance> neighborsDistance;

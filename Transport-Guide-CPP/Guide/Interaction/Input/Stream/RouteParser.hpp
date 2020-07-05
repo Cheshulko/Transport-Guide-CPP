@@ -14,20 +14,20 @@
 #include <iostream>
 #include <memory>
 
-namespace guide::interaction::input {
+namespace guide::interaction::input::stream {
 
-class StreamRouteParser
+class RouteParser
 {
 public:
-    static StreamRouteParser& GetInstance();
+    static RouteParser& GetInstance();
     std::shared_ptr<route::Route> Parse(std::istream& in);
 
 private:
-    StreamRouteParser();
+    RouteParser();
 
 public:
-    StreamRouteParser(StreamRouteParser const&) = delete;
-    void operator=(StreamRouteParser const&)    = delete;
+    RouteParser(RouteParser const&) = delete;
+    void operator=(RouteParser const&)    = delete;
 };
 
 }
