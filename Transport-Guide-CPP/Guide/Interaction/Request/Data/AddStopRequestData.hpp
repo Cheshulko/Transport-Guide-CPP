@@ -12,20 +12,28 @@
 #include "GeoPoint.hpp"
 
 #include <string>
+#include <utility>
+#include <vector>
 
 namespace guide::interaction::request::data {
 
 class AddStopRequestData
 {
 public:
-    AddStopRequestData(const std::string& name, const route::GeoPoint& geoPoint);
+    using NeighborDistance = std::pair<size_t, std::string>;
+    
+public:
+    AddStopRequestData(const std::string& name, const route::GeoPoint& geoPoint, const std::vector<NeighborDistance>& neighborsDistance);
     
     const std::string& GetStopName() const;
     const route::GeoPoint& GetGeoPoint() const;
+    const std::vector<NeighborDistance>& GetNeighborsDistance() const;
     
 private:
     std::string name_;
     route::GeoPoint geoPoint_;
+    
+    std::vector<NeighborDistance> neighborsDistance_;
 };
 
 }
