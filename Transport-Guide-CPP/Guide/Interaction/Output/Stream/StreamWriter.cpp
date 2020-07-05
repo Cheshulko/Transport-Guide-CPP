@@ -1,25 +1,25 @@
 //
-//  StreamWriter.cpp
+//  SWriter.cpp
 //  transportnyi-spravochnik
 //
 //  Created by Mykyta Cheshulko on 03.07.2020.
 //  Copyright © 2020 Mykyta Cheshulko. All rights reserved.
 //
 
-#include "StreamWriter.hpp"
+#include "SWriter.hpp"
 #include "RouteInfoResponse.hpp"
 #include "StopCrossingRoutesResponse.hpp"
 
 #include <iostream>
 #include <iomanip>
 
-namespace guide::interaction::output {
+namespace guide::interaction::output::stream {
 
-StreamWriter::StreamWriter(std::ostream& os)
+SWriter::SWriter(std::ostream& os)
     : os_(os)
 {}
 
-void StreamWriter::WriteRouteInfoResponse(const response::RouteInfoResponse& routeInfoResponse)
+void SWriter::WriteRouteInfoResponse(const response::RouteInfoResponse& routeInfoResponse)
 {
     const auto& routeInfoResponseData = routeInfoResponse.GetRouteInfoResponseData();
     os_ << "Bus " << routeInfoResponseData.GetRouteNumber()    << ": "
@@ -34,7 +34,7 @@ void StreamWriter::WriteRouteInfoResponse(const response::RouteInfoResponse& rou
                   << curvature << " curvature" << std::endl;
 }
 
-void StreamWriter::WriteStopCrossingRoutesResponse(const response::StopCrossingRoutesResponse& stopCrossingRoutesResponse)
+void SWriter::WriteStopCrossingRoutesResponse(const response::StopCrossingRoutesResponse& stopCrossingRoutesResponse)
 {
     const auto& crossingRoutesResponseData = stopCrossingRoutesResponse.GetStopCrossingRoutesResponseData();
     os_ << "Stop " << crossingRoutesResponseData.GetStopName() << ":";

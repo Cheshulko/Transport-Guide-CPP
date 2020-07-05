@@ -13,12 +13,12 @@
 
 #include <iostream>
 
-namespace guide::interaction::output {
+namespace guide::interaction::output::stream {
 
-class StreamWriter: public Writer
+class SWriter: public Writer
 {
 public:
-    StreamWriter(std::ostream& os = std::cout);
+    SWriter(std::ostream& os = std::cout);
     
     virtual void WriteRouteInfoResponse(const response::RouteInfoResponse& routeInfoResponse) override;
     virtual void WriteStopCrossingRoutesResponse(const response::StopCrossingRoutesResponse& stopCrossingRoutesResponse) override;
