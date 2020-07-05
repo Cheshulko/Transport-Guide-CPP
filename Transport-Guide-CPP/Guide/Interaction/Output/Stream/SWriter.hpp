@@ -18,7 +18,7 @@ namespace guide::interaction::output::stream {
 class SWriter: public Writer
 {
 public:
-    SWriter(std::ostream& os = std::cout);
+    explicit SWriter(std::ostream& os = std::cout);
     
     virtual void WriteRouteInfoResponse(const response::RouteInfoResponse& routeInfoResponse) override;
     virtual void WriteStopCrossingRoutesResponse(const response::StopCrossingRoutesResponse& stopCrossingRoutesResponse) override;
