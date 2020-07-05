@@ -17,7 +17,7 @@ namespace guide::interaction::request {
 class AddRouteRequest: public Request
 {
 public:
-    AddRouteRequest(std::shared_ptr<route::Route> route);
+    explicit AddRouteRequest(std::shared_ptr<route::Route> route);
     
     virtual std::shared_ptr<response::Response> PerformOn(route::RoutesMap& routesMap) const override;
     

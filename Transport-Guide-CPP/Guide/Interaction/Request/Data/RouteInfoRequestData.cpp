@@ -10,13 +10,13 @@
 
 namespace guide::interaction::request::data {
 
-RouteInfoRequestData::RouteInfoRequestData(const std::string& number)
-    : number_(number)
+RouteInfoRequestData::RouteInfoRequestData(const std::string& name)
+    : name_(name)
 {}
 
-const std::string& RouteInfoRequestData::GetRouteNumber() const
+const std::string& RouteInfoRequestData::GetRouteName() const
 {
-    return number_;
+    return name_;
 }
 
 }

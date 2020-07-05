@@ -17,7 +17,7 @@ namespace guide::interaction::request {
 class RouteInfoRequest: public Request
 {
 public:
-    RouteInfoRequest(std::shared_ptr<data::RouteInfoRequestData> routeInfo);
+    explicit RouteInfoRequest(std::shared_ptr<data::RouteInfoRequestData> routeInfo);
     
     virtual std::shared_ptr<response::Response> PerformOn(route::RoutesMap& routesMap) const override;
     

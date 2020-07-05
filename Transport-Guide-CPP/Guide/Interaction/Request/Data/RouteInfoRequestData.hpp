@@ -17,12 +17,12 @@ namespace guide::interaction::request::data {
 class RouteInfoRequestData
 {
 public:
-    explicit RouteInfoRequestData(const std::string& number);
+    explicit RouteInfoRequestData(const std::string& name);
     
-    const std::string& GetRouteNumber() const;
+    const std::string& GetRouteName() const;
     
 private:
-    std::string number_;
+    std::string name_;
 };
 
 }

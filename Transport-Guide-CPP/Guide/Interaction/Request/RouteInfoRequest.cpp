@@ -24,7 +24,7 @@ RouteInfoRequest::RouteInfoRequest(std::shared_ptr<data::RouteInfoRequestData> r
 
 std::shared_ptr<response::Response> RouteInfoRequest::PerformOn(route::RoutesMap& routesMap) const
 {
-    if (auto routeWeakOpt = routesMap.FindRoute(routeInfo_->GetRouteNumber()); routeWeakOpt.has_value()) {
+    if (auto routeWeakOpt = routesMap.FindRoute(routeInfo_->GetRouteName()); routeWeakOpt.has_value()) {
         auto routePtr = routeWeakOpt.value().lock();
         assert(routePtr != nullptr);
         const auto name = routePtr->GetName();
@@ -35,7 +35,7 @@ std::shared_ptr<response::Response> RouteInfoRequest::PerformOn(route::RoutesMap
             name, stopsCnt, uniqueStopsCnt, routeLength
         });
     } else {
-        throw exception::NoRouteException("Bus " + routeInfo_->GetRouteNumber() + ": not found");
+        throw exception::NoRouteException("Bus " + routeInfo_->GetRouteName() + ": not found");
     }
 }
 

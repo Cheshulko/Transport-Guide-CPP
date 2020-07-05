@@ -19,7 +19,7 @@ StreamStopParser& StreamStopParser::GetInstance()
     return instance;
 }
 
-std::shared_ptr<route::Stop> StreamStopParser::Parse(std::istream& in)
+std::shared_ptr<request::data::AddStopRequestData> StreamStopParser::Parse(std::istream& in)
 {
     std::string name, der;
     double lat, lon;
@@ -27,7 +27,7 @@ std::shared_ptr<route::Stop> StreamStopParser::Parse(std::istream& in)
     std::getline(in, name, ':');
     in >> lat >> der >> lon;
     
-    auto stopPtr = std::make_shared<route::Stop>(name, route::GeoPoint{ lat, lon });
+    auto stopPtr = std::make_shared<request::data::AddStopRequestData>(name, route::GeoPoint{ lat, lon });
     
 #ifdef LOG_DEBUG
     std::cerr << "LOG: Parsed " << *stopPtr << std::endl;

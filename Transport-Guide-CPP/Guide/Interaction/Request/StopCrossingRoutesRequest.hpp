@@ -17,7 +17,7 @@ namespace guide::interaction::request {
 class StopCrossingRoutesRequest: public Request
 {
 public:
-    StopCrossingRoutesRequest(std::shared_ptr<data::StopCrossingRoutesRequestData> stopCrossing);
+    explicit StopCrossingRoutesRequest(std::shared_ptr<data::StopCrossingRoutesRequestData> stopCrossing);
     
     virtual std::shared_ptr<response::Response> PerformOn(route::RoutesMap& routesMap) const override;
     

@@ -8,26 +8,32 @@
 
 #include "AddStopRequest.hpp"
 #include "EmptyResponse.hpp"
+#include "Stop.hpp"
+
+#include <memory>
 
 namespace guide::interaction::request {
 
-AddStopRequest::AddStopRequest(std::shared_ptr<route::Stop> stop)
+AddStopRequest::AddStopRequest(std::shared_ptr<data::AddStopRequestData> addStopRequestData)
     : Request(Request::Type::AddStop)
-    , stop_(std::move(stop))
+    , addStopRequestData_(std::move(addStopRequestData))
 {}
 
 std::shared_ptr<response::Response> AddStopRequest::PerformOn(route::RoutesMap& routesMap) const
 {
-    if (auto stopWeakOpt = routesMap.FindStop(stop_); stopWeakOpt.has_value()) {
-        if (auto stopFound = stopWeakOpt.value().lock();
-            !stopFound->IsComplete())
+    const auto& stopName = addStopRequestData_->GetStopName();
+    const auto& geoPoint = addStopRequestData_->GetGeoPoint();
+    
+    if (auto stopWeakOpt = routesMap.FindStop(stopName); stopWeakOpt.has_value()) {
+        if (auto stopFound = stopWeakOpt.value().lock(); stopFound != nullptr)
         {
-            if (auto geoPointOpt = stop_->GetGeoPoint(); geoPointOpt.has_value()) {
-                stopFound->SetGeoPoint(stop_->GetGeoPoint().value());
+            if (!stopFound->IsComplete()) {
+                stopFound->SetGeoPoint(geoPoint);
             }
+
         }
     } else {
-        routesMap.AddStop(stop_);
+        routesMap.AddStop(std::make_shared<route::Stop>(stopName, geoPoint));
     }
     
     return std::make_shared<response::EmptyResponse>();

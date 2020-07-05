@@ -9,9 +9,10 @@
 #ifndef StreamStopParser_hpp
 #define StreamStopParser_hpp
 
-#include "Stop.hpp"
+#include "AddStopRequestData.hpp"
 
 #include <iostream>
+#include <memory>
 
 namespace guide::interaction::input {
 
@@ -19,7 +20,7 @@ class StreamStopParser
 {
 public:
     static StreamStopParser& GetInstance();
-    std::shared_ptr<route::Stop> Parse(std::istream& in);
+    std::shared_ptr<request::data::AddStopRequestData> Parse(std::istream& in);
 
 private:
     StreamStopParser();

@@ -10,19 +10,19 @@
 #define AddStopRequest_hpp
 
 #include "Request.hpp"
-#include "Stop.hpp"
+#include "AddStopRequestData.hpp"
 
 namespace guide::interaction::request {
 
 class AddStopRequest: public Request
 {
 public:
-    AddStopRequest(std::shared_ptr<route::Stop> stop);
+    explicit AddStopRequest(std::shared_ptr<data::AddStopRequestData> addStopRequestData);
     
     virtual std::shared_ptr<response::Response> PerformOn(route::RoutesMap& routesMap) const override;
     
 private:
-    std::shared_ptr<route::Stop> stop_;
+    std::shared_ptr<data::AddStopRequestData> addStopRequestData_;
 };
 
 }
