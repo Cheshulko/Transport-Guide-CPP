@@ -12,6 +12,7 @@ namespace guide::interaction::request::data {
 
 StopCrossingRoutesRequestData::StopCrossingRoutesRequestData(const std::string& stopName, std::optional<size_t> id)
     : stopName_(stopName)
+    , id_(id)
 {}
 
 const std::string& StopCrossingRoutesRequestData::GetStopName() const

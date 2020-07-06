@@ -13,13 +13,7 @@
 
 namespace guide::serialization::json {
 
-Document::Document(Node root)
-    : root(move(root))
-{}
-
-const Node& Document::GetRoot() const {
-    return root;
-}
+namespace {
 
 Node LoadNode(std::istream& input);
 
@@ -35,16 +29,6 @@ Node LoadArray(std::istream& input)
     }
 
     return Node(move(result));
-}
-
-Node LoadInt(std::istream& input)
-{
-    int result = 0;
-    while (isdigit(input.peek())) {
-        result *= 10;
-        result += input.get() - '0';
-    }
-    return Node(result);
 }
 
 Node LoadNumber(std::istream& input)
@@ -121,7 +105,21 @@ Node LoadNode(std::istream& input)
     }
 }
 
-Document Load(std::istream& input)
+}
+
+Document::Document(Node root)
+    : root_(move(root))
+{}
+
+const Node& Document::GetRoot() const {
+    return root_;
+}
+
+Node& Document::GetRoot() {
+    return root_;
+}
+
+Document Document::Load(std::istream& input)
 {
     return Document{ LoadNode(input) };
 }

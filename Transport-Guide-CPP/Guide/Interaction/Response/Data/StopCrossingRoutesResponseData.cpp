@@ -10,9 +10,11 @@
 
 namespace guide::interaction::response::data {
 
-StopCrossingRoutesResponseData::StopCrossingRoutesResponseData(const std::string& stopName, const std::vector<std::string>& crossingRoutesNames)
+StopCrossingRoutesResponseData::StopCrossingRoutesResponseData(const std::string& stopName, const std::vector<std::string>& crossingRoutesNames,
+                                                               std::optional<size_t> id)
     : stopName_(stopName)
     , crossingRoutesNames_(crossingRoutesNames)
+    , id_(id)
 {}
 
 const std::string& StopCrossingRoutesResponseData::GetStopName() const
@@ -23,6 +25,11 @@ const std::string& StopCrossingRoutesResponseData::GetStopName() const
 const std::vector<std::string>& StopCrossingRoutesResponseData::GetCrossingRoutesNames() const
 {
     return crossingRoutesNames_;
+}
+
+std::optional<size_t> StopCrossingRoutesResponseData::GetStopId() const
+{
+    return id_;
 }
 
 }

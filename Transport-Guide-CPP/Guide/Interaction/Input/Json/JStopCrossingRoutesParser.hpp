@@ -28,7 +28,7 @@ private:
 
 public:
     JStopCrossingRoutesParser(JStopCrossingRoutesParser const&) = delete;
-    void operator=(JStopCrossingRoutesParser const&)                = delete;
+    void operator=(JStopCrossingRoutesParser const&)            = delete;
 };
 
 }

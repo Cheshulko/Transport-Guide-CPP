@@ -12,20 +12,26 @@
 #include <cstddef>
 #include <string>
 #include <vector>
+#include <optional>
 
 namespace guide::interaction::response::data {
 
 class StopCrossingRoutesResponseData
 {
 public:
-    StopCrossingRoutesResponseData(const std::string& stopName, const std::vector<std::string>& crossingRoutesNames);
+    StopCrossingRoutesResponseData(const std::string& stopName, const std::vector<std::string>& crossingRoutesNames,
+                                   std::optional<size_t> id = std::nullopt);
     
     const std::string& GetStopName() const;
     const std::vector<std::string>& GetCrossingRoutesNames() const;
     
+    std::optional<size_t> GetStopId() const;
+    
 private:
     std::string stopName_;
     std::vector<std::string> crossingRoutesNames_;
+    
+    std::optional<size_t> id_;
 };
 
 }

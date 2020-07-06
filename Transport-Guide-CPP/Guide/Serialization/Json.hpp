@@ -32,6 +32,14 @@ public:
         return std::get<std::map<std::string, Node>>(*this);
     }
     
+    auto& AsArray() {
+        return std::get<std::vector<Node>>(*this);
+    }
+    
+    auto& AsMap() {
+        return std::get<std::map<std::string, Node>>(*this);
+    }
+    
     int AsInt() const {
         return std::get<int>(*this);
     }
@@ -55,12 +63,13 @@ public:
     explicit Document(Node root);
 
     const Node& GetRoot() const;
+    Node& GetRoot();
+
+    static Document Load(std::istream& input);
 
 private:
-    Node root;
+    Node root_;
 };
-
-Document Load(std::istream& input);
 
 }
 

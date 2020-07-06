@@ -47,7 +47,8 @@ std::shared_ptr<response::Response> StopCrossingRoutesRequest::PerformOn(route::
             }
         });
         
-        return std::make_shared<response::StopCrossingRoutesResponse>( response::data::StopCrossingRoutesResponseData { stopCrossing_->GetStopName(), std::vector<std::string>(crossingRoutesNames_S.begin(), crossingRoutesNames_S.end())
+        return std::make_shared<response::StopCrossingRoutesResponse>( response::data::StopCrossingRoutesResponseData { stopCrossing_->GetStopName(), std::vector<std::string>(crossingRoutesNames_S.begin(), crossingRoutesNames_S.end()),
+            stopCrossing_->GetStopId()
         });
     } else {
         throw exception::NoStopException("Stop " + stopCrossing_->GetStopName() + ": not found");

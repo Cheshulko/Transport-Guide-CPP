@@ -33,7 +33,7 @@ JInputParser::JInputParser(std::istream& in)
 
 std::vector<std::shared_ptr<interaction::request::Request>> JInputParser::Parse()
 {
-    serialization::json::Document document = serialization::json::Load(in_);
+    serialization::json::Document document = serialization::json::Document::Load(in_);
     serialization::json::Node root = document.GetRoot();
 
     const auto& rootMap = root.AsMap();

@@ -34,7 +34,7 @@ std::shared_ptr<response::Response> RouteInfoRequest::PerformOn(route::RoutesMap
         const auto practicalLength = routePtr->GetPracticalDistance();
         
         return std::make_shared<response::RouteInfoResponse>( response::data::RouteInfoResponseData {
-            name, stopsCnt, uniqueStopsCnt, routeLength, practicalLength
+            name, stopsCnt, uniqueStopsCnt, routeLength, practicalLength, routeInfo_->GetRouteId()
         });
     } else {
         throw exception::NoRouteException("Bus " + routeInfo_->GetRouteName() + ": not found");
