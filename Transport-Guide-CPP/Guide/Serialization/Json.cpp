@@ -157,7 +157,7 @@ void Node::Write(std::ostream& os, bool isLast) const
             os << std::setprecision(6) << value << (isLast ? " " : ", ");
         },
         [&os, isLast](bool value) {  },
-        [&os, isLast](std::string value) {
+        [&os, isLast](const std::string& value) {
             os << "\"" << value << "\"" << (isLast ? " " : ", ");
         },
     }, static_cast<std::variant<std::vector<Node>,
