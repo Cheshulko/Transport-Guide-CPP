@@ -131,7 +131,7 @@ Node& Document::GetRoot() {
 void Node::Write(std::ostream& os, bool isLast) const
 {
     std::visit(overloaded {
-        [&os, isLast](std::vector<Node> value) {
+        [&os, isLast](const std::vector<Node>& value) {
             os << " [ ";
             for (auto it = value.cbegin(); it != value.cend(); ++it) {
                 bool isLastValue = (it == std::prev(value.cend()));
@@ -140,7 +140,7 @@ void Node::Write(std::ostream& os, bool isLast) const
             }
             os << " ] " << (isLast ? " " : ", ");
         },
-        [&os, isLast](std::map<std::string, Node> value) {
+        [&os, isLast](const std::map<std::string, Node>& value) {
             os << " { ";
             for (auto it = value.cbegin(); it != value.cend(); ++it) {
                 bool isLastValue = (it == std::prev(value.cend()));
