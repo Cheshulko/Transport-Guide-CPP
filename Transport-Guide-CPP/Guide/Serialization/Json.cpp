@@ -11,6 +11,8 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <variant>
+#include <map>
 
 namespace guide::serialization::json {
 
@@ -39,34 +41,41 @@ Node LoadNumber(std::istream& input)
 {
     double result = 0;
     double p = 0.1;
-    while (isdigit(input.peek())) {
+    int k = 1;
+    if (input.peek() == '-') {
+        input.get();
+        k = -1;
+    }
+    while (std::isdigit(input.peek())) {
         result *= 10;
         result += input.get() - '0';
     }
     if (input.peek() == '.') {
         input.get();
-        while (isdigit(input.peek())) {
+        while (std::isdigit(input.peek())) {
             result += p * (input.get() - '0');
             p *= 0.1;
         }
-        return Node(result);
+        return Node(k * result);
     } else {
-        return Node(static_cast<int>(result));
+        return Node(k * static_cast<int>(result));
     }
 }
 
 Node LoadString(std::istream& input)
 {
     std::string line;
-    getline(input, line, '"');
+    std::getline(input, line, '"');
     return Node(move(line));
 }
 
 Node LoadBool(std::istream& input)
 {
-    std::string line;
-    input >> line;
-    return Node((line == "true"));
+    char t;
+    input >> t;
+    bool isTrue = (t == 't'); // rue
+    for(int i = 0; i < 3 + (!isTrue); ++i) input >> t;
+    return Node(isTrue);
 }
 
 Node LoadDict(std::istream& input)
@@ -80,10 +89,10 @@ Node LoadDict(std::istream& input)
 
         std::string key = LoadString(input).AsString();
         input >> c;
-        result.emplace(move(key), LoadNode(input));
+        result.emplace(std::move(key), LoadNode(input));
     }
 
-    return Node(move(result));
+    return Node(std::move(result));
 }
 
 Node LoadNode(std::istream& input)
@@ -108,7 +117,7 @@ Node LoadNode(std::istream& input)
 }
 
 Document::Document(Node root)
-    : root_(move(root))
+    : root_(std::move(root))
 {}
 
 const Node& Document::GetRoot() const {
@@ -122,24 +131,24 @@ Node& Document::GetRoot() {
 void Node::Write(std::ostream& os, bool isLast) const
 {
     std::visit(overloaded {
-        [&os, isLast](const std::vector<Node>& value) {
+        [&os, isLast](std::vector<Node> value) {
             os << " [ ";
             for (auto it = value.cbegin(); it != value.cend(); ++it) {
                 bool isLastValue = (it == std::prev(value.cend()));
-                
+
                 it->Write(os, isLastValue);
             }
             os << " ] " << (isLast ? " " : ", ");
         },
-        [&os, isLast](const std::map<std::string, Node>& value) {
+        [&os, isLast](std::map<std::string, Node> value) {
             os << " { ";
             for (auto it = value.cbegin(); it != value.cend(); ++it) {
                 bool isLastValue = (it == std::prev(value.cend()));
-                
+
                 os << "\"" << it->first << "\" : ";
                 it->second.Write(os, isLastValue);
             }
-            os << " } ";
+            os << " } " << (isLast ? " " : ", ");
         },
         [&os, isLast](int value) {
             os << value << (isLast ? " " : ", ");
@@ -148,10 +157,12 @@ void Node::Write(std::ostream& os, bool isLast) const
             os << std::setprecision(6) << value << (isLast ? " " : ", ");
         },
         [&os, isLast](bool value) {  },
-        [&os, isLast](const std::string& value) {
+        [&os, isLast](std::string value) {
             os << "\"" << value << "\"" << (isLast ? " " : ", ");
         },
-    }, *this);
+    }, static_cast<std::variant<std::vector<Node>,
+               std::map<std::string, Node>,
+               int, double, bool, std::string>>(*this));
 }
 
 void Document::Write(std::ostream& os) const

@@ -17,7 +17,7 @@
 
 namespace guide::serialization::json {
 
-class Node: public std::variant<std::vector<Node>,
+class Node: std::variant<std::vector<Node>,
             std::map<std::string, Node>,
             int, double, bool, std::string>
 {
@@ -45,7 +45,10 @@ public:
     }
     
     double AsDouble() const {
-        return std::get<double>(*this);
+        if (std::holds_alternative<double>(*this)) {
+            return std::get<double>(*this);
+        }
+        return AsInt();
     }
     
     int AsBool() const {
