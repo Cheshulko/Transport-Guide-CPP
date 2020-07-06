@@ -9,6 +9,7 @@
 #include "JWriter.hpp"
 #include "RouteInfoResponse.hpp"
 #include "StopCrossingRoutesResponse.hpp"
+#include "ErrorResponse.hpp"
 
 #include <iostream>
 #include <iomanip>
@@ -85,7 +86,7 @@ void JWriter::WriteStopCrossingRoutesResponse(const response::StopCrossingRoutes
         }; // Yeah Yeah Yeah
     } else {
         // TODO: Exception for this case
-        throw std::runtime_error("No route id in response data");
+        throw std::runtime_error("No stop id in response data");
     }
     
     Node stopCrossingRoutesBusesNode {
@@ -103,6 +104,36 @@ void JWriter::WriteStopCrossingRoutesResponse(const response::StopCrossingRoutes
     
     stopCrossingRoutesResponseNodeMap["buses"] = stopCrossingRoutesBusesNode;
     rootArray_.push_back(stopCrossingRoutesResponseNode);
+}
+
+void JWriter::WriteErrorResponse(const response::ErrorResponse& errorResponse)
+{
+    using Node = serialization::json::Node;
+    
+    const auto& errorResponseData = errorResponse.GetErrorResponseData();
+    
+    Node errorResponseNode {
+        std::map<std::string, Node> {}
+    };
+    
+    auto& errorResponseNodeMap = errorResponseNode.AsMap();
+    
+    // TODO: Fix `Yeah Yeah Yeah` case
+    
+    if (auto requestIdOpt = errorResponseData.GetRequestId(); requestIdOpt.has_value()) {
+        errorResponseNodeMap["request_id"] = Node {
+            static_cast<int>(requestIdOpt.value())
+        }; // Yeah Yeah Yeah
+    } else {
+        // TODO: Exception for this case
+        throw std::runtime_error("No id in response data");
+    }
+    
+    errorResponseNodeMap["error_message"] = Node {
+        errorResponseData.GetErrorMessage()
+    };
+    
+    rootArray_.push_back(errorResponseNodeMap);
 }
 
 }

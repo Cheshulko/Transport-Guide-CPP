@@ -7,10 +7,12 @@
 //
 
 #include "StopCrossingRoutesRequest.hpp"
+
 #include "StopCrossingRoutesResponse.hpp"
 #include "StopCrossingRoutesResponseData.hpp"
 
-#include "NoStopException.hpp"
+#include "ErrorResponse.hpp"
+#include "ErrorResponseData.hpp"
 
 #include <iostream>
 #include <cassert>
@@ -51,7 +53,10 @@ std::shared_ptr<response::Response> StopCrossingRoutesRequest::PerformOn(route::
             stopCrossing_->GetStopId()
         });
     } else {
-        throw exception::NoStopException("Stop " + stopCrossing_->GetStopName() + ": not found");
+        return std::make_shared<response::ErrorResponse>( response::data::ErrorResponseData {
+            std::string{ "not found" },
+            stopCrossing_->GetStopId()
+        });
     }
 }
 

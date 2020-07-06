@@ -7,10 +7,12 @@
 //
 
 #include "RouteInfoRequest.hpp"
+
 #include "RouteInfoResponse.hpp"
 #include "RouteInfoResponseData.hpp"
 
-#include "NoRouteException.hpp"
+#include "ErrorResponse.hpp"
+#include "ErrorResponseData.hpp"
 
 #include <iostream>
 #include <cassert>
@@ -37,7 +39,10 @@ std::shared_ptr<response::Response> RouteInfoRequest::PerformOn(route::RoutesMap
             name, stopsCnt, uniqueStopsCnt, routeLength, practicalLength, routeInfo_->GetRouteId()
         });
     } else {
-        throw exception::NoRouteException("Bus " + routeInfo_->GetRouteName() + ": not found");
+        return std::make_shared<response::ErrorResponse>( response::data::ErrorResponseData {
+            std::string{ "not found" },
+            routeInfo_->GetRouteId()
+        });
     }
 }
 

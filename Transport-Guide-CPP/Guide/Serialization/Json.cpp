@@ -16,7 +16,6 @@ namespace guide::serialization::json {
 
 namespace {
 
-template<class> inline constexpr bool always_false_v = false;
 template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
 template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 
@@ -66,12 +65,8 @@ Node LoadString(std::istream& input)
 Node LoadBool(std::istream& input)
 {
     std::string line;
-    getline(input, line);
-    if (line == "true") {
-        return Node(true);
-    } else {
-        return Node(false);
-    }
+    input >> line;
+    return Node((line == "true"));
 }
 
 Node LoadDict(std::istream& input)
@@ -126,7 +121,6 @@ Node& Document::GetRoot() {
 
 void Node::Write(std::ostream& os, bool isLast) const
 {
-
     std::visit(overloaded {
         [&os, isLast](const std::vector<Node>& value) {
             os << " [ ";
@@ -151,7 +145,7 @@ void Node::Write(std::ostream& os, bool isLast) const
             os << value << (isLast ? " " : ", ");
         },
         [&os, isLast](double value) {
-            os << std::setprecision(7) << value << (isLast ? " " : ", ");
+            os << std::setprecision(6) << value << (isLast ? " " : ", ");
         },
         [&os, isLast](bool value) {  },
         [&os, isLast](const std::string& value) {

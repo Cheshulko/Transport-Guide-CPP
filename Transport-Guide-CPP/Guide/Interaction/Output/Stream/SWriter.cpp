@@ -9,6 +9,7 @@
 #include "SWriter.hpp"
 #include "RouteInfoResponse.hpp"
 #include "StopCrossingRoutesResponse.hpp"
+#include "ErrorResponse.hpp"
 
 #include <iostream>
 #include <iomanip>
@@ -50,6 +51,11 @@ void SWriter::WriteStopCrossingRoutesResponse(const response::StopCrossingRoutes
         }
         os_ << std::endl;
     }
+}
+
+void SWriter::WriteErrorResponse(const response::ErrorResponse& errorResponse)
+{
+    throw std::logic_error("Unimplemented");
 }
 
 }

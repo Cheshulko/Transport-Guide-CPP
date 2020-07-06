@@ -22,6 +22,7 @@ public:
     
     virtual void WriteRouteInfoResponse(const response::RouteInfoResponse& routeInfoResponse) override;
     virtual void WriteStopCrossingRoutesResponse(const response::StopCrossingRoutesResponse& stopCrossingRoutesResponse) override;
+    virtual void WriteErrorResponse(const response::ErrorResponse& errorResponse) override;
     
 private:
     std::ostream& os_;
