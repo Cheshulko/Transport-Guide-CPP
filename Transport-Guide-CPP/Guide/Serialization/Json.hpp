@@ -9,7 +9,7 @@
 #ifndef Json_hpp
 #define Json_hpp
 
-#include <istream>
+#include <iostream>
 #include <map>
 #include <string>
 #include <variant>
@@ -17,7 +17,7 @@
 
 namespace guide::serialization::json {
 
-class Node: std::variant<std::vector<Node>,
+class Node: public std::variant<std::vector<Node>,
             std::map<std::string, Node>,
             int, double, bool, std::string>
 {
@@ -55,6 +55,8 @@ public:
     const auto& AsString() const {
         return std::get<std::string>(*this);
     }
+    
+    void Write(std::ostream& os, bool isLast = false) const;
 };
 
 class Document
@@ -64,7 +66,9 @@ public:
 
     const Node& GetRoot() const;
     Node& GetRoot();
-
+    
+    void Write(std::ostream& os) const;
+    
     static Document Load(std::istream& input);
 
 private:

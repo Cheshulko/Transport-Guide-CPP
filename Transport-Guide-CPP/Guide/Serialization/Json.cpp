@@ -10,10 +10,15 @@
 
 #include <iostream>
 #include <string>
+#include <iomanip>
 
 namespace guide::serialization::json {
 
 namespace {
+
+template<class> inline constexpr bool always_false_v = false;
+template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
+template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 
 Node LoadNode(std::istream& input);
 
@@ -98,13 +103,13 @@ Node LoadNode(std::istream& input)
     } else if (c == '"') {
         return LoadString(input);
     } else if (c == 'f' || c == 't') {
+        input.putback(c);
         return LoadBool(input);
     } else {
         input.putback(c);
         return LoadNumber(input);
     }
 }
-
 }
 
 Document::Document(Node root)
@@ -117,6 +122,47 @@ const Node& Document::GetRoot() const {
 
 Node& Document::GetRoot() {
     return root_;
+}
+
+void Node::Write(std::ostream& os, bool isLast) const
+{
+
+    std::visit(overloaded {
+        [&os, isLast](const std::vector<Node>& value) {
+            os << " [ ";
+            for (auto it = value.cbegin(); it != value.cend(); ++it) {
+                bool isLastValue = (it == std::prev(value.cend()));
+                
+                it->Write(os, isLastValue);
+            }
+            os << " ] " << (isLast ? " " : ", ");
+        },
+        [&os, isLast](const std::map<std::string, Node>& value) {
+            os << " { ";
+            for (auto it = value.cbegin(); it != value.cend(); ++it) {
+                bool isLastValue = (it == std::prev(value.cend()));
+                
+                os << "\"" << it->first << "\" : ";
+                it->second.Write(os, isLastValue);
+            }
+            os << " } ";
+        },
+        [&os, isLast](int value) {
+            os << value << (isLast ? " " : ", ");
+        },
+        [&os, isLast](double value) {
+            os << std::setprecision(7) << value << (isLast ? " " : ", ");
+        },
+        [&os, isLast](bool value) {  },
+        [&os, isLast](const std::string& value) {
+            os << "\"" << value << "\"" << (isLast ? " " : ", ");
+        },
+    }, *this);
+}
+
+void Document::Write(std::ostream& os) const
+{
+    root_.Write(os, true);
 }
 
 Document Document::Load(std::istream& input)
