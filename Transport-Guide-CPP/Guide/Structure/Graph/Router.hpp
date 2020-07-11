@@ -10,7 +10,7 @@
 #define Router_hpp
 
 #include "Range.hpp"
-#include "Graph.hpp"
+#include "DirectedWeightedGraph.hpp"
 
 #include <algorithm>
 #include <cassert>

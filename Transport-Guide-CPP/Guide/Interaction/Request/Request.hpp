@@ -22,7 +22,8 @@ public:
         AddStop,
         AddRoute,
         RouteInfo,
-        StopCrossing
+        StopCrossing,
+        OptimalRoute
     };
     
 public:

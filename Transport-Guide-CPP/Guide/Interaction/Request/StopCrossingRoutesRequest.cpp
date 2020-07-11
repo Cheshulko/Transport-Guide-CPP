@@ -26,7 +26,7 @@ namespace guide::interaction::request {
 
 StopCrossingRoutesRequest::StopCrossingRoutesRequest(std::shared_ptr<data::StopCrossingRoutesRequestData> stopCrossing)
     : Request(Request::Type::StopCrossing)
-    , stopCrossing_(std::move(stopCrossing))
+    , stopCrossing_(stopCrossing)
 {}
 
 std::shared_ptr<response::Response> StopCrossingRoutesRequest::PerformOn(route::RoutesMap& routesMap) const

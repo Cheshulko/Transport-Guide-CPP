@@ -54,6 +54,34 @@ double Route::GetPracticalDistance() const
     return routePracticalLength;
 }
 
+double Route::GetPracticalDistanceBetweenStops(std::shared_ptr<Stop> from, std::shared_ptr<Stop> to) const
+{
+    double routePracticalLength = 0.0;
+    const auto& stops = GetRouteStops();
+    
+    auto it = stops.cbegin();
+    while(it != stops.cend() && (*it).lock() != from) {
+        ++it;
+    }
+    
+    for (; it != stops.cend() && (*it).lock() != to; ++it) {
+        if (auto nextTo = std::next(it); nextTo != stops.cend()) {
+            
+            if ((*nextTo).lock() == from) {
+                routePracticalLength = 0;
+            } else {
+                auto neighborStopDistanceOpt = (*it).lock()->FindNeighborStopDistance((*nextTo).lock());
+                
+                assert(neighborStopDistanceOpt.has_value());
+                
+                routePracticalLength += neighborStopDistanceOpt.value();
+            }
+        }
+    }
+    
+    return routePracticalLength;
+}
+
 bool Route::operator==(const Route& rhs) const
 {
     return this->GetName() == rhs.GetName();

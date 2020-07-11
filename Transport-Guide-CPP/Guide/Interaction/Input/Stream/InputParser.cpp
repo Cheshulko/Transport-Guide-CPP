@@ -29,10 +29,8 @@ InputParser::InputParser(std::istream& in)
     : in_(in)
 {}
 
-std::vector<std::shared_ptr<interaction::request::Request>> InputParser::Parse()
+bool InputParser::Parse()
 {
-    std::vector<std::shared_ptr<interaction::request::Request>> requests;
-    
     size_t requestsCnt = 0;
     in_ >> requestsCnt;
     in_.get();
@@ -56,10 +54,10 @@ std::vector<std::shared_ptr<interaction::request::Request>> InputParser::Parse()
         {
             if (type == "Stop") {
                 auto stopParsedPtr = StopParser::GetInstance().Parse(stream);
-                requests.push_back(std::make_shared<interaction::request::AddStopRequest>(stopParsedPtr));
+                baseRequests_.push_back(std::make_shared<interaction::request::AddStopRequest>(stopParsedPtr));
             } else if (type == "Bus") {
                 auto routeParsedPtr = RouteParser::GetInstance().Parse(stream);
-                requests.push_back(std::make_shared<interaction::request::AddRouteRequest>(routeParsedPtr));
+                baseRequests_.push_back(std::make_shared<interaction::request::AddRouteRequest>(routeParsedPtr));
             } else {
                 throw std::runtime_error("No such type");
             }
@@ -89,17 +87,32 @@ std::vector<std::shared_ptr<interaction::request::Request>> InputParser::Parse()
         {
             if (type == "Bus") {
                 auto routeInfoParsedPtr = RouteInfoParser::GetInstance().Parse(stream);
-                requests.push_back(std::make_shared<interaction::request::RouteInfoRequest>(routeInfoParsedPtr));
+                statRequests_.push_back(std::make_shared<interaction::request::RouteInfoRequest>(routeInfoParsedPtr));
             } else if (type == "Stop") {
                 auto stopCrossingRoutesParsedPtr = StopCrossingRoutesParser::GetInstance().Parse(stream);
-                requests.push_back(std::make_shared<interaction::request::StopCrossingRoutesRequest>(stopCrossingRoutesParsedPtr));
+                statRequests_.push_back(std::make_shared<interaction::request::StopCrossingRoutesRequest>(stopCrossingRoutesParsedPtr));
             } else {
                 throw std::runtime_error("No such type");
             }
         }
     }
     
-    return requests;
+    return true;
+}
+
+std::vector<std::shared_ptr<interaction::request::Request>> InputParser::GetBaseRequests() const
+{
+    return baseRequests_;
+}
+
+std::vector<std::shared_ptr<interaction::request::Request>> InputParser::GetStatRequests() const
+{
+    return statRequests_;
+}
+
+std::shared_ptr<route::RoutesMap::Settings> InputParser::GetRouteMapSettings() const
+{
+    throw std::logic_error("Unimplemented");
 }
 
 }

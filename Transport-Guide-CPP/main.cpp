@@ -28,21 +28,37 @@ using Document = guide::serialization::json::Document;
 
 int main() {
     
-//    std::ifstream file ("in.txt");
-//
-//    if (!file.is_open()) {
-//        throw std::runtime_error("No in.txt");
-//    }
+    std::ifstream file ("in.txt");
+
+    if (!file.is_open()) {
+        throw std::runtime_error("No in.txt");
+    }
     
     auto d = Document{ Node { std::vector<Node> {} } };
     
-    guide::route::RoutesMap routesMap;
     guide::interaction::output::json::JWriter streamWriter(d);
     
-    std::unique_ptr<guide::interaction::input::Parser> parser = std::make_unique<guide::interaction::input::json::JInputParser>(std::cin);
+    std::unique_ptr<guide::interaction::input::Parser> parser = std::make_unique<guide::interaction::input::json::JInputParser>(file);
     
-    const auto requests = parser->Parse();
-    for (const auto& request: requests) {
+    if (!parser->Parse()) {
+        return 1;
+    }
+    
+    guide::route::RoutesMap routesMap;
+    
+    for (const auto& request: parser->GetBaseRequests()) {
+        try {
+            request->PerformOn(routesMap)->WriteOuptut(streamWriter);
+        } catch(const guide::exception::GuideException& e) {
+            // TODO: To writer
+            std::cout << e.GetMessage() << std::endl;
+        }
+    }
+    
+    routesMap.SetSettings(parser->GetRouteMapSettings());
+    routesMap.BuildGraph();
+    
+    for (const auto& request: parser->GetStatRequests()) {
         try {
             request->PerformOn(routesMap)->WriteOuptut(streamWriter);
         } catch(const guide::exception::GuideException& e) {
@@ -52,6 +68,7 @@ int main() {
     }
     
     d.Write(std::cout);
+    
 //    std::ofstream out_file;
 //    out_file.open("out.txt");
 //    d.Write(out_file);

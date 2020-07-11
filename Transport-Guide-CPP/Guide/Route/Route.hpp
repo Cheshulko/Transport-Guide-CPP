@@ -50,6 +50,7 @@ public:
     
     virtual double GetDistance() const;
     virtual double GetPracticalDistance() const;
+    virtual double GetPracticalDistanceBetweenStops(std::shared_ptr<Stop> from, std::shared_ptr<Stop> to) const;
     
     virtual bool Contains(const Stop& stop) const = 0;
     

@@ -12,14 +12,18 @@
 #include "Route.hpp"
 #include "Stop.hpp"
 #include "Request.hpp"
+#include "RoutesMap.hpp"
 
 namespace guide::interaction::input {
 
 class Parser
 {
 public:
-    virtual std::vector<std::shared_ptr<interaction::request::Request>> Parse() = 0;
-
+    virtual bool Parse() = 0;
+    virtual std::vector<std::shared_ptr<interaction::request::Request>> GetBaseRequests() const = 0;
+    virtual std::vector<std::shared_ptr<interaction::request::Request>> GetStatRequests() const = 0;
+    virtual std::shared_ptr<route::RoutesMap::Settings> GetRouteMapSettings() const = 0;
+    
     virtual ~Parser() { /* None */ }
 };
 

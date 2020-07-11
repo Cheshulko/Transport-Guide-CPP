@@ -32,7 +32,7 @@ template <typename Weight>
 class DirectedWeightedGraph
 {
 private:
-    using IncidentEdgesRange = Range<typename vector<EdgeId>::const_iterator>;
+    using IncidentEdgesRange = Range<typename std::vector<EdgeId>::const_iterator>;
 
 public:
     DirectedWeightedGraph(size_t vertex_count);
