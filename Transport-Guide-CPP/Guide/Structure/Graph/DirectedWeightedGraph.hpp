@@ -26,6 +26,7 @@ struct Edge
     VertexId from;
     VertexId to;
     Weight weight;
+    size_t cnt;
 };
 
 template <typename Weight>

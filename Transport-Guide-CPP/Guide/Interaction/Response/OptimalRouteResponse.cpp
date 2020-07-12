@@ -14,14 +14,14 @@ OptimalRouteResponse::OptimalRouteResponse(const data::OptimalRouteResponseData&
     : optimalRouteResponseData_(optimalRouteResponseData)
 {}
 
-const data::OptimalRouteResponseData& OptimalRouteResponse::GetoptimalRouteResponseData() const
+const data::OptimalRouteResponseData& OptimalRouteResponse::GetOptimalRouteResponseData() const
 {
     return optimalRouteResponseData_;
 }
 
 void OptimalRouteResponse::WriteOuptut(output::Writer& writer) const
 {
-//    writer.WriteStopCrossingRoutesResponse(*this);
+    writer.WriteOptimalRouteResponse(*this);
 }
 
 }

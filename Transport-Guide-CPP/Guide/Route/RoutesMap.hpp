@@ -53,15 +53,17 @@ public:
     void SetSettings(std::shared_ptr<Settings> settings_);
     
     size_t GetStopsCount() const;
+    const Settings& GetSettings() const;
     std::optional<size_t> GetStopId(std::shared_ptr<Stop> stop) const;
     std::optional<std::weak_ptr<Stop>> GetStop(size_t stopId) const;
     std::optional<std::weak_ptr<Route>> GetRoute(size_t routeId) const;
     
     std::vector<std::tuple<
-        std::weak_ptr<Stop>, /* From stop     */
-        std::weak_ptr<Stop>, /* To stop       */
-        double,              /* Time, minutes */
-        std::weak_ptr<Route> /* Using route   */
+        std::weak_ptr<Stop>,  /* From stop     */
+        std::weak_ptr<Stop>,  /* To stop       */
+        double,               /* Time, minutes */
+        std::weak_ptr<Route>, /* Using route   */
+        size_t                /* Stops count   */
     >> GetOptimalRoute(std::shared_ptr<Stop> fromStop, std::shared_ptr<Stop> toStop);
      
     void BuildGraph();

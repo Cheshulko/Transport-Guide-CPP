@@ -19,7 +19,7 @@ class OptimalRouteResponse: public Response
 public:
     explicit OptimalRouteResponse(const data::OptimalRouteResponseData& optimalRouteResponseData);
     
-    const data::OptimalRouteResponseData& GetoptimalRouteResponseData() const;
+    const data::OptimalRouteResponseData& GetOptimalRouteResponseData() const;
     
     virtual void WriteOuptut(output::Writer& writer) const override;
 

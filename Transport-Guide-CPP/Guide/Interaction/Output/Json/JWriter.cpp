@@ -9,6 +9,7 @@
 #include "JWriter.hpp"
 #include "RouteInfoResponse.hpp"
 #include "StopCrossingRoutesResponse.hpp"
+#include "OptimalRouteResponse.hpp"
 #include "ErrorResponse.hpp"
 
 #include <iostream>
@@ -104,6 +105,87 @@ void JWriter::WriteStopCrossingRoutesResponse(const response::StopCrossingRoutes
     
     stopCrossingRoutesResponseNodeMap["buses"] = stopCrossingRoutesBusesNode;
     rootArray_.push_back(stopCrossingRoutesResponseNode);
+}
+
+void JWriter::WriteOptimalRouteResponse(const response::OptimalRouteResponse& optimalRouteResponse)
+{
+    using Node = serialization::json::Node;
+    
+    const auto& optimalRouteResponseData = optimalRouteResponse.GetOptimalRouteResponseData();
+    
+    Node optimalRouteResponseNode {
+        std::map<std::string, Node> {}
+    };
+    
+    auto& optimalRouteResponseNodeMap = optimalRouteResponseNode.AsMap();
+    
+    // TODO: Fix `Yeah Yeah Yeah` case
+    
+    if (auto requestIdOpt = optimalRouteResponseData.GetRequestId(); requestIdOpt.has_value()) {
+        optimalRouteResponseNodeMap["request_id"] = Node {
+            static_cast<int>(requestIdOpt.value())
+        }; // Yeah Yeah Yeah
+    } else {
+        // TODO: Exception for this case
+        throw std::runtime_error("No id in response data");
+    }
+    
+    optimalRouteResponseNodeMap["total_time"] = Node {
+        optimalRouteResponseData.GetTime()
+    };
+    
+    optimalRouteResponseNodeMap["items"] = Node {
+        std::vector<Node> {}
+    };
+    
+    auto& optimalRouteResponseItems = optimalRouteResponseNodeMap["items"].AsArray();
+    
+    for (const auto& item: optimalRouteResponseData.GetItems()) {
+        
+        Node itemNode {
+            std::map<std::string, Node> {}
+        };
+        
+        auto& itemNodeMap = itemNode.AsMap();
+        
+        switch (item->GetType()) {
+            case response::data::OptimalRouteResponseData::Item::Type::Wait: {
+                
+                itemNodeMap["time"] = Node {
+                    item->GetTime()
+                };
+                itemNodeMap["stop_name"] = Node {
+                    item->GetName()
+                };
+                itemNodeMap["type"] = Node {
+                    std::string { "Wait" }
+                };
+                
+                break;
+            }
+            case response::data::OptimalRouteResponseData::Item::Type::Bus: {
+                    
+                itemNodeMap["time"] = Node {
+                    item->GetTime()
+                };
+                itemNodeMap["bus"] = Node {
+                    item->GetName()
+                };
+                itemNodeMap["span_count"] = Node {
+                    static_cast<int>(item->GetCount())
+                };
+                itemNodeMap["type"] = Node {
+                    std::string { "Bus" }
+                };
+                
+                break;
+            }
+        }
+        
+        optimalRouteResponseItems.push_back(std::move(itemNode));
+    }
+    
+    rootArray_.push_back(optimalRouteResponseNode);
 }
 
 void JWriter::WriteErrorResponse(const response::ErrorResponse& errorResponse)
