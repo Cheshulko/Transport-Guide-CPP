@@ -11,6 +11,9 @@
 #include "OptimalRouteResponse.hpp"
 #include "OptimalRouteResponseData.hpp"
 
+#include "ErrorResponse.hpp"
+#include "ErrorResponseData.hpp"
+
 #include <cassert>
 #include <iostream>
 
@@ -37,45 +40,47 @@ std::shared_ptr<response::Response> OptimalRouteRequest::PerformOn(route::Routes
     
     response::data::OptimalRouteResponseData optimalRouteResponseData { optimalRouteRequestData_->GetId() };
     
-    const auto& optimalRouteInfo = routesMap.GetOptimalRoute(fromStop, toStop);
+    const auto& optimalRouteInfoOpt = routesMap.GetOptimalRoute(fromStop, toStop);
     
-    std::cout << "ID="<< optimalRouteRequestData_->GetId().value() << std::endl;
-    
-    for (const auto& [
-        fromStopWeak,
-        toStopWeak,
-        routeTime,
-        routeWeak,
-        stopsCnt
-    ] : optimalRouteInfo) {
-        auto fromStop = fromStopWeak.lock();
-        auto toStop   = toStopWeak.lock();
-        auto route    = routeWeak.lock();
+    if (optimalRouteInfoOpt.has_value()) {
+        auto optimalRouteInfo = optimalRouteInfoOpt.value();
         
-        assert(fromStop != nullptr);
-        assert(toStop   != nullptr);
-        assert(route    != nullptr);
-        
-        std::cout << fromStop->GetName() << "->" << toStop->GetName() << " t:" << routeTime << " on " << route->GetName() << std::endl;
-        
-        optimalRouteResponseData.AddItem(
-              std::make_shared<response::data::OptimalRouteResponseData::WaitItem>(
-                   routesMap.GetSettings().GetBusWaitTime(),
-                   fromStop->GetName(),
-                   1
-              )
-        );
-        optimalRouteResponseData.AddItem(
-              std::make_shared<response::data::OptimalRouteResponseData::BusItem>(
-                   routeTime - routesMap.GetSettings().GetBusWaitTime(),
-                   route->GetName(),
-                   stopsCnt
-              )
-        );
+        for (const auto& [
+            fromStopWeak,
+            toStopWeak,
+            routeTime,
+            routeWeak,
+            stopsCnt
+        ] : optimalRouteInfo) {
+            auto fromStop = fromStopWeak.lock();
+            auto toStop   = toStopWeak.lock();
+            auto route    = routeWeak.lock();
+            
+            assert(fromStop != nullptr);
+            assert(toStop   != nullptr);
+            assert(route    != nullptr);
+            
+            optimalRouteResponseData.AddItem(
+                  std::make_shared<response::data::OptimalRouteResponseData::WaitItem>(
+                       routesMap.GetSettings().GetBusWaitTime(),
+                       fromStop->GetName(),
+                       1
+                  )
+            );
+            optimalRouteResponseData.AddItem(
+                  std::make_shared<response::data::OptimalRouteResponseData::BusItem>(
+                       routeTime - routesMap.GetSettings().GetBusWaitTime(),
+                       route->GetName(),
+                       stopsCnt
+                  )
+            );
+        }
+    } else {
+        return std::make_shared<response::ErrorResponse>( response::data::ErrorResponseData {
+            std::string{ "not found" },
+            optimalRouteRequestData_->GetId()
+        });
     }
-    
-    std::cout << std::endl;
-    
     return std::make_shared<response::OptimalRouteResponse>(optimalRouteResponseData);
 }
 

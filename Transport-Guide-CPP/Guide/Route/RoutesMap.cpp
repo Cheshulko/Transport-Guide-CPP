@@ -124,22 +124,15 @@ std::optional<std::weak_ptr<Route>> RoutesMap::GetRoute(size_t routeId) const
     }
 }
 
-std::vector<std::tuple<
-    std::weak_ptr<Stop>,  /* From stop     */
-    std::weak_ptr<Stop>,  /* To stop       */
-    double,               /* Time, minutes */
-    std::weak_ptr<Route>, /* Using route   */
-    size_t                /* Stops count   */
->> RoutesMap::GetOptimalRoute(std::shared_ptr<Stop> fromStop, std::shared_ptr<Stop> toStop)
-{
+std::optional<
     std::vector<std::tuple<
-        std::weak_ptr<Stop>,
-        std::weak_ptr<Stop>,
-        double,
-        std::weak_ptr<Route>,
-        size_t
-    >> result;
-    
+        std::weak_ptr<Stop>,  /* From stop     */
+        std::weak_ptr<Stop>,  /* To stop       */
+        double,               /* Time, minutes */
+        std::weak_ptr<Route>, /* Using route   */
+        size_t                /* Stops count   */
+>>> RoutesMap::GetOptimalRoute(std::shared_ptr<Stop> fromStop, std::shared_ptr<Stop> toStop)
+{
     const auto fromStopId = GetStopId(fromStop);
     const auto toStopId   = GetStopId(toStop);
     
@@ -148,6 +141,14 @@ std::vector<std::tuple<
     
     auto routeInfoOpt = router_->BuildRoute(fromStopId.value(), toStopId.value());
     if (routeInfoOpt.has_value()) {
+        std::vector<std::tuple<
+            std::weak_ptr<Stop>,
+            std::weak_ptr<Stop>,
+            double,
+            std::weak_ptr<Route>,
+            size_t
+        >> result;
+        
         const auto& routeInfo = routeInfoOpt.value();
         
         for (size_t edgeIndex = 0; edgeIndex < routeInfo.edge_count; ++edgeIndex) {
@@ -170,12 +171,11 @@ std::vector<std::tuple<
                 edge.cnt
             );
         }
+        
+        return result;
     } else {
-        // TODO: Handle this case
-//        throw std::runtime_error("No route");
+        return std::nullopt;
     }
-    
-    return result;
 }
 
 void RoutesMap::BuildGraph()
@@ -185,28 +185,45 @@ void RoutesMap::BuildGraph()
     
     for (const auto& route: routes_) {
         const auto& routeStops = route->GetRouteStops();
+        const auto& stops = route->GetRouteStops();
         const auto routeStopsCnt = routeStops.size();
         
-        for (size_t from_ind = 0; from_ind < routeStopsCnt; ++from_ind) {
+        auto it = stops.begin();
+        for (size_t from_ind = 0; from_ind < routeStopsCnt - 1; ++from_ind, ++it) {
             
             auto fromStopPtr = routeStops[from_ind].lock();
             assert(fromStopPtr != nullptr);
             const auto fromStopId = GetStopId(fromStopPtr);
             assert(fromStopId.has_value());
             
-            for (size_t to_ind = from_ind + 1; to_ind < routeStopsCnt; ++to_ind) {
+            double routePracticalLength = 0.0;
+            size_t cnt = 0;
+            
+            auto currentStop = it;
+            for (size_t to_ind = from_ind + 1; to_ind < routeStopsCnt; ++to_ind, ++currentStop) {
                 auto toStopPtr = routeStops[to_ind].lock();
                 assert(toStopPtr != nullptr);
                 const auto toStopId = GetStopId(toStopPtr);
                 assert(toStopId.has_value());
                 
-                const auto distanse = route->GetPracticalDistanceBetweenStops(fromStopPtr, toStopPtr);
+                auto nextTo = std::next(currentStop)->lock();
+                
+                if (*nextTo == *(it->lock())) {
+                    routePracticalLength = 0;
+                    cnt = 0;
+                    continue;
+                }
+                
+                auto neighborStopDistanceOpt = currentStop->lock()->FindNeighborStopDistance(nextTo);
+                assert(neighborStopDistanceOpt.has_value());
+                routePracticalLength += neighborStopDistanceOpt.value();
+                ++cnt;
                 
                 auto edgeId = graph_->AddEdge({
                     .from = fromStopId.value(),
                     .to = toStopId.value(),
-                    .weight = 0.06 * distanse / settings_->GetBusVelocity() + settings_->GetBusWaitTime(),
-                    .cnt = to_ind - from_ind
+                    .weight = 0.06 * routePracticalLength / settings_->GetBusVelocity() + settings_->GetBusWaitTime(),
+                    .cnt = cnt
                 });
                 
                 assert(edgeId == idRoutes_.size());

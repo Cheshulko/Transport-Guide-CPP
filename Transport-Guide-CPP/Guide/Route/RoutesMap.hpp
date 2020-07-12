@@ -58,13 +58,14 @@ public:
     std::optional<std::weak_ptr<Stop>> GetStop(size_t stopId) const;
     std::optional<std::weak_ptr<Route>> GetRoute(size_t routeId) const;
     
-    std::vector<std::tuple<
-        std::weak_ptr<Stop>,  /* From stop     */
-        std::weak_ptr<Stop>,  /* To stop       */
-        double,               /* Time, minutes */
-        std::weak_ptr<Route>, /* Using route   */
-        size_t                /* Stops count   */
-    >> GetOptimalRoute(std::shared_ptr<Stop> fromStop, std::shared_ptr<Stop> toStop);
+    std::optional<
+        std::vector<std::tuple<
+            std::weak_ptr<Stop>,  /* From stop     */
+            std::weak_ptr<Stop>,  /* To stop       */
+            double,               /* Time, minutes */
+            std::weak_ptr<Route>, /* Using route   */
+            size_t                /* Stops count   */
+    >>> GetOptimalRoute(std::shared_ptr<Stop> fromStop, std::shared_ptr<Stop> toStop);
      
     void BuildGraph();
 

@@ -9,6 +9,7 @@
 #include "Route.hpp"
 
 #include <cassert>
+#include <limits>
 
 namespace guide::route {
 
@@ -54,9 +55,11 @@ double Route::GetPracticalDistance() const
     return routePracticalLength;
 }
 
-double Route::GetPracticalDistanceBetweenStops(std::shared_ptr<Stop> from, std::shared_ptr<Stop> to) const
+std::pair<size_t, double> Route::GetPracticalDistanceBetweenStops(std::shared_ptr<Stop> from, std::shared_ptr<Stop> to) const
 {
     double routePracticalLength = 0.0;
+    size_t cnt = 0;
+    
     const auto& stops = GetRouteStops();
     
     auto it = stops.cbegin();
@@ -64,22 +67,32 @@ double Route::GetPracticalDistanceBetweenStops(std::shared_ptr<Stop> from, std::
         ++it;
     }
     
-    for (; it != stops.cend() && (*it).lock() != to; ++it) {
+    std::pair<size_t, double> res = { 0, std::numeric_limits<double>::max() };
+    
+    for (; it != stops.cend() && std::next(it) != stops.cend(); ++it) {
         if (auto nextTo = std::next(it); nextTo != stops.cend()) {
             
             if ((*nextTo).lock() == from) {
                 routePracticalLength = 0;
+                cnt = 0;
             } else {
                 auto neighborStopDistanceOpt = (*it).lock()->FindNeighborStopDistance((*nextTo).lock());
                 
                 assert(neighborStopDistanceOpt.has_value());
                 
                 routePracticalLength += neighborStopDistanceOpt.value();
+                ++cnt;
+            }
+            
+            if ((*nextTo).lock() == to) {
+                if (res.second > routePracticalLength) {
+                    res = {cnt, routePracticalLength};
+                }
             }
         }
     }
     
-    return routePracticalLength;
+    return res;
 }
 
 bool Route::operator==(const Route& rhs) const
